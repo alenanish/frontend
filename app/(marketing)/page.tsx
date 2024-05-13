@@ -33,14 +33,14 @@ const MarketingPage = () => {
                         Твой ключ к продуктивности
                     </div>
                 </div>
-                <div className="text-3xl md:text-6xl text-center text-neutral-800 p-2">
+                <div className="text-3xl md:text-5xl text-center text-neutral-800 p-2">
                     Возьми под
                 </div>
-                    <mark className="text-3xl md:text-6xl  text-white px-4 p-2 rounded-md
+                    <mark className="text-3xl md:text-5xl  text-white px-4 p-2 rounded-md
     pb-4 w-fit text-center">
                         контроль
                     </mark> 
-                <div className="text-3xl md:text-6xl text-center text-neutral-800 mb-3">
+                <div className="text-3xl md:text-5xl text-center text-neutral-800 mb-3">
                     свои задачи
                 </div>
                 <div className={cn(

@@ -3,7 +3,7 @@
   @tailwind utilities;
 
 
-  html,
+  html, 
   body,
   :root {
     height: 100%;
@@ -41,6 +41,8 @@
       --ring: 0 0% 3.9%;
 
       --radius: 0.5rem;
+
+      --gradient: linear-gradient(129.19deg, #A46DDA 20.92%, #F7716D 99.27%);
     }
 
     .dark {
