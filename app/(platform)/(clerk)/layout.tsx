@@ -1,4 +1,5 @@
 import { Logo } from "@/components/logo";
+import Image from "next/image";
 
 import "@/app/style.css";
 
@@ -9,18 +10,25 @@ const ClerkLayout = ({
     children: React.ReactNode;
 }) => {
     return (
-        <section className="h-full w-full flex justify-center ">
-            <div className="bg-white p-6 m-6 rounded-md ">
-                <div className="w-fit">
-                    <Logo  />
+        <section className="h-full w-full flex justify-center items-center">
+            <div className="bg-white m-6 p-4 rounded-md justify-center items-center h-fit w-fit grid grid-cols-2 gap-3">
+                
+                <div className="flex justify-center items-center md:grid cols-fr">
+                    <div className="flex w-fit">
+                        <Logo />
+                    </div>
+                    <div >
+                            {children}
+                        </div>
                 </div>
-                <div className="flex items-center justify-center gap-4 p-4">
-                    <div className=" ">
-                        {children}
-                    </div>
-                    <div>
-                        <img className="p-10 hidden md:block" src="Illustration.svg" alt=""  />
-                    </div>
+                
+                    
+                <div className="hidden md:grid cols-fr justify-center items-center">
+                    <img
+                            src="/Illustration.svg"
+                            alt="Logo"
+                            className="size-full"
+                        />
                 </div>
             </div>
         </section>

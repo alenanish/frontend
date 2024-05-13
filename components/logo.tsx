@@ -22,8 +22,8 @@ const textFont = Inter({
 export const Logo = () => {
     return (
         <Link href="/">
-            <div className="hover:opacity-75 transition
-            items-center gap-x-2 hidden md:flex drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)) ">
+            <div className="hover:opacity-75 transition 
+             gap-x-2 hidden md:flex items-center ; ">
                 <Image
                     src="/logo.svg"
                     alt="Logo"
