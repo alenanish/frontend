@@ -1,3 +1,7 @@
+"use client";
+
+import React, { useState } from 'react';
+import axios from 'axios';
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,6 +11,24 @@ import "@/app/style.css";
 
 
 const SignUp = () => {
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleRegister = () => {
+        axios.post('http://localhost:8000/register/', {
+            username: username,
+            email: email,
+            password: password
+        })
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.error(error);
+        });
+    };
+
     return (
         <div className="w-full flex-col flex place-items-center">
             <h2 className="text-2xl bold md:text-2xl text-neutral-800 mb-4">
@@ -14,16 +36,16 @@ const SignUp = () => {
             </h2>
             
             <div className="grid w-full max-w-sm gap-1.5 mb-2">
-                <Label htmlFor="name">Имя</Label>
-                <Input type="name" id="name" placeholder="Введите имя" />
+                <Label htmlFor="username">Имя</Label>
+                <Input type="text" id="username" placeholder="Введите имя" onChange={e => setUsername(e.target.value)} />
             </div>
             <div className="grid w-full max-w-sm gap-1.5 mb-4">
                 <Label htmlFor="email">Эл. почта</Label>
-                <Input type="email" id="email" placeholder="Введите адрес эл. почты " />
+                <Input type="email" id="email" placeholder="Введите адрес эл. почты" onChange={e => setEmail(e.target.value)} />
             </div>
             <div className="grid w-full max-w-sm gap-1.5 mb-4">
                 <Label htmlFor="password">Пароль</Label>
-                <Input type="password" id="password" placeholder="Придумайте пароль" />
+                <Input type="password" id="password" placeholder="Придумайте пароль" onChange={e => setPassword(e.target.value)} />
             </div>
             <div className="grid w-full max-w-sm gap-1.5 mb-4">
                 <Label htmlFor="confirm_password">Подтверждение пароля</Label>
