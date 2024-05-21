@@ -1,10 +1,9 @@
 import { Logo } from "@/components/logo";
-import Image from "next/image";
 
 import "@/app/style.css";
 
 
-const ClerkLayout = ({
+const AuthRegisterLayout = ({
     children
 } : {
     children: React.ReactNode;
@@ -40,4 +39,4 @@ const ClerkLayout = ({
     );
 };
 
-export default ClerkLayout;
+export default AuthRegisterLayout;
