@@ -23,15 +23,17 @@ export const Logo = () => {
     return (
         <Link href="/">
             <div className="hover:opacity-75 transition 
-             gap-x-2 flex items-center ">
+             gap-x-2 flex items-center w-full">
                 <Image
                     src="/logo.svg"
                     alt="Logo"
-                    height={30}
-                    width={30}
+                    height={32}
+                    width={32}
                 />
-                <p className={cn("text-lg text-violet-900 pb-1", textFont.className, )}>
-                    Таск Мастер
+                <p className={cn("w-8 h-8 text-lg/[16px] text-violet-900",
+                 textFont.className, )}>
+                    Таск 
+                    Мастер
                 </p>
                 
             </div>

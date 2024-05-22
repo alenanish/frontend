@@ -20,7 +20,7 @@ const AuthRegisterLayout = ({
                     ">
                     
                 </div>
-                <div className="col-span-1 inline-block h-full">
+                <div className="col-span-1 inline-block ">
                     <div className="w-fit self-start ">
                         <Logo />
                     </div>
