@@ -24,7 +24,7 @@ export const Sidebar = () => {
             <div className={` ${open ? "w-72" : "w-20"}
             flex flex-col transition-all duration-300 items-start bg-white w-fit h-screen m-0 p-3 gap-9 relative
              border-r border-primary rounded-r-lg drop-shadow-[4px_0px_8px_rgba(0, 0, 0, 0.25)]`}>
-                <Button className="transition-all absolute -right-3 top-3 " variant="outline" size="icon" onClick={() => setOpen(!open)}> 
+                <Button className="transition-all absolute -right-4 top-3 " variant="outline" size="icon" onClick={() => setOpen(!open)}> 
                     {
                         open ? (
                             <ChevronLeft className="transition-all group-hover:stroke-accent  stroke-[#8E59C4] m-0 p-0"/>
@@ -37,12 +37,13 @@ export const Sidebar = () => {
                 <div className=" pt-1">
                     { open ? (<Logo />) : (<PureLogo />) }
                 </div>
-                    <div className="flex h-full flex-col items-start p-0 gap-5
+                    <div className="flex h-full flex-col items-start p-0 gap-5 relative
                     ">
                       {
                         Buttons.map((button, index) => (
-                            <Button variant="outline" asChild key={index}
-                            className="last: flex flex-row items-center m-0 py-4 px-2 gap-2 rounded-lg">
+                            <Button variant="ghost" asChild key={index}
+                            className={`w-full flex flex-row justify-start m-0 py-4 px-2 gap-2 rounded-lg
+                            last:absolute last:bottom-0`}>
                                 <Link href={ button.path }>
                                     { button.src  }
                                     <span className={`${!open && "hidden"} origin-left text-lg`}>
