@@ -63,7 +63,7 @@ const DashboardPage = () => {
             <div className="flex flex-wrap gap-4">
                 {
                     Projects.map((proj, index) => (
-                        <Card id={ proj.id } title={ proj.title } progress={proj.progress} deadline={ proj.deadline } />
+                        <Card key={index} id={ proj.id } title={ proj.title } progress={proj.progress} deadline={ proj.deadline } />
                     ))   
                 }
             </div>
