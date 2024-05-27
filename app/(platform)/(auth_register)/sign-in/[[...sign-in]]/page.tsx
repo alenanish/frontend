@@ -38,12 +38,12 @@ const SignIn = () => {
             </p>
             <div className="grid w-full max-w-sm items-center gap-1.5 mb-2">
                 <Label htmlFor="username">Логин</Label>
-                <Input type="text" id="username" placeholder="Логин" onChange={e => setUsername(e.target.value)} />
+                <Input required type="text" id="username" placeholder="Логин" onChange={e => setUsername(e.target.value)} />
             </div>
             <div className="grid w-full max-w-sm items-center gap-1.5 mb-4">
                 <Label htmlFor="password">Пароль</Label>
-                <Input type="password" id="password" placeholder="Пароль" onChange={e => setPassword(e.target.value)}  />
-            </div>
+                <Input required type="password" id="password" placeholder="Пароль" onChange={e => setPassword(e.target.value)}  />
+            </div>  
                 
             <Button type="submit" size="lg" className="max-w-sm mb-4 w-full" onClick={handleLogin}>
                 Войти

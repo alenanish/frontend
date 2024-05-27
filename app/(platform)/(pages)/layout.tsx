@@ -6,15 +6,18 @@ const DashboardLayout = ({
     children: React.ReactNode;
 })  => {
     return (
-        <div className="h-full flex flex-row bg-violet-100">
+        <div className="h-full flex flex-row bg-violet-100 gap-2">
             
             <div className="">
                 <Sidebar />  
             </div>
 
-            <main className="w-full h-full flex items-center justify-center overflow-hidden">
-                {children}
-            </main>
+            <div className="w-full h-full block  ">
+                <main>
+                    {children}
+                </main>
+                
+            </div>
             
         </div>
     );
