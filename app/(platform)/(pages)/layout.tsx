@@ -1,4 +1,4 @@
-import { Sidebar } from "./_components/sidebar";
+import { Sidebar } from "./_components/sidebar"
 
 const DashboardLayout = ({
     children
@@ -7,8 +7,12 @@ const DashboardLayout = ({
 })  => {
     return (
         <div className="h-full flex flex-row bg-violet-100">
-            <Sidebar />
-            <main className="w-full h-full flex items-center justify-center">
+            
+            <div className="">
+                <Sidebar />  
+            </div>
+
+            <main className="w-full h-full flex items-center justify-center overflow-hidden">
                 {children}
             </main>
             
