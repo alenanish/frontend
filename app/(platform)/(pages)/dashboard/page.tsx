@@ -6,7 +6,7 @@ import { useState } from "react";
 
 import React from 'react'; 
 import axios from 'axios';
-import Card from "../_components/card";
+import Card  from './_components/card'
 
 
 const DashboardPage = () => {
@@ -19,6 +19,8 @@ const DashboardPage = () => {
         {id: 2, title: "Проекты", progress: 70, deadline: "12.05.24"},
         {id: 3, title: "Проекты", progress: 100, deadline: "12.05.24"},
         {id: 4, title: "Проекты", progress: 0, deadline: "12.05.24"},
+        {id: 5, title: "Проекты", progress: 0, deadline: "12.05.24"},
+        {id: 6, title: "Проекты Проекты Проекты", progress: 0, deadline: "12.05.24"},
             
     ]
 
@@ -30,6 +32,7 @@ const DashboardPage = () => {
 
             <div className="flex w-full flex-row items-center py-2 gap-4 h-max ">
                 <div className="flex flex-row gap-2 w-full">
+                    {/* Добавить компонент Чип  */}
                     <div>Chip</div>
                     <div>Chip</div>
                     <div>Chip</div>
