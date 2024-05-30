@@ -14,7 +14,7 @@ const DashboardLayout = ({
 
     return (
         
-        <div className="w-full h-full transition-all flex flex-row bg-violet-100 gap-2 relative">
+        <div className="w-full min-h-full transition-all flex flex-row bg-violet-100 gap-2 relative">
             
             <div className="fixed">
                 <Sidebar expanded={expanded} />  
@@ -30,14 +30,12 @@ const DashboardLayout = ({
                 </Button>
 
             </div>
-            <div className="flex flex-col w-full h-full">
                 
-                <div className={`${expanded? "ml-44" :"ml-20" }`}>
-                    <main>
-                        {children}
-                    </main>
+            <div className={`${expanded? "ml-44" :"ml-20" }`}>
+                <main>
+                    {children}
+                </main>
                     
-                </div>
             </div>
             
         </div>

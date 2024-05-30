@@ -1,6 +1,7 @@
 import { Logo } from "@/components/logo";
 
 import "@/app/style.css";
+import Link from "next/link";
 
 
 const AuthRegisterLayout = ({
@@ -21,9 +22,9 @@ const AuthRegisterLayout = ({
                     
                 </div>
                 <div className="col-span-1 inline-block ">
-                    <div className="w-fit self-start ">
+                    <Link href="/" className="hover:opacity-75 transition w-fit self-start ">
                         <Logo />
-                    </div>
+                    </Link>
                     <div className="h-full flex items-center" >
                             <div className="flex w-5/6 m-auto">
                                 {children}

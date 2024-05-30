@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 import "@/app/style.css";
-import { ChevronLeft, ChevronRight, LayoutDashboard, LayoutList, Calendar, Settings, LogOut } from "lucide-react";
+import { LayoutDashboard, LayoutList, Calendar, Settings, LogOut } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 
 
@@ -40,9 +40,8 @@ export const Sidebar = ( {expanded} : {expanded: boolean} ) => {
                       {
                         Buttons.map((button, index) => (
                             <Button variant={pathname === button.path ? "active" : "ghost" } asChild key={index} onClick={() => router.push(button.path)}
-                            className={` border-l-2 border-white w-full flex flex-row justify-start m-0 py-4 px-2 gap-2 rounded-lg
-                            last:absolute last:bottom-0`}>
-                                {/*TO DO: изменить цвет границы у активной кнопки */}
+                            className={`w-full flex flex-row justify-start m-0 py-4 px-2 gap-2 rounded-lg
+                            last:absolute last:bottom-0 border-l-2  ${pathname === button.path ? "" : "border-white" }`}>
                                 <Link href={ button.path }>
                                     { button.src  }
                                     <span className={`${!expanded && "hidden"} origin-left text-lg`}>

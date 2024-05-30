@@ -20,13 +20,13 @@ const DashboardPage = () => {
         {id: 3, title: "Проекты", progress: 100, deadline: "12.05.24"},
         {id: 4, title: "Проекты", progress: 0, deadline: "12.05.24"},
         {id: 5, title: "Проекты", progress: 0, deadline: "12.05.24"},
-        {id: 6, title: "Проекты Проекты Проекты", progress: 0, deadline: "12.05.24"},
+        {id: 6, title: "Проекты Проекты Проекты Проекты Проекты", progress: 0, deadline: "12.05.24"},
             
     ]
 
     return (
-        <div className=" transition-all flex flex-col gap-4 items-start m-2 p-4" >
-            <h1 className="block text-2xl font-medium">
+        <div className=" flex flex-col gap-2 items-start m-2 p-4" >
+            <h1 className="block text-3xl font-medium text-neutral-800">
                 Проекты
             </h1>
 
@@ -39,9 +39,9 @@ const DashboardPage = () => {
 
                 </div>
                 <div>
-                    <Button type="button"  variant="default" className="gap-2" >
+                    <Button type="button"  variant="default" className="sm:px-2 md:gap-2" >
                         
-                        <Plus className="p-0 m-0" />
+                        <Plus />
                         <span className="hidden md:block">
                             Создать проект
                         </span>
@@ -51,22 +51,10 @@ const DashboardPage = () => {
                 </div>
             </div>
             
-            <div className=" whitespace-pre-line">
-                <form>
-                    <input 
-                    id="title"
-                    name="titile"
-                    placeholder="Введите название проекта"
-                    required
-                    className="border border-input rounded-md p-1"
-                    />
-                </form>
-                
-            </div>
             <div className="flex flex-wrap gap-4">
                 {
-                    Projects.map((proj, index) => (
-                        <Card key={index} id={ proj.id } title={ proj.title } progress={proj.progress} deadline={ proj.deadline } />
+                    Projects.map((project, index) => (
+                        <Card key={index} id={ project.id } title={ project.title } progress={ project.progress } deadline={ project.deadline } />
                     ))   
                 }
             </div>

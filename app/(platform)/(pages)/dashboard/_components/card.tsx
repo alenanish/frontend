@@ -22,7 +22,7 @@ const Card = ({ id, title, progress, deadline } : {id: number; title: string; pr
   };
 
   return (
-    <article className="bg-white  border-2 border-primary flex flex-col items-stretch p-3 gap-3
+    <article className="bg-white  border-2 border-primary flex flex-col items-stretch p-3 gap-2
                          shadow-[0px_4px_8px_rgba(0,0,0,0.5)] rounded-md w-[200px] h-[200px]">
         
 
@@ -31,26 +31,28 @@ const Card = ({ id, title, progress, deadline } : {id: number; title: string; pr
             <Button size="icon" type="button" variant={isOpen? "outline" : "ghost"}  onClick={handleOpenDropdown}>
                 { 
                     isOpen? 
-                    <X className="w-5 h-5" /> :
-                    <EllipsisVertical />
+                    <X size={20} className="w-5 h-5" /> :
+                    <EllipsisVertical size={20} />
                 }
                 
             </Button>
             {isOpen && (
                 <div className="flex gap-1 ">
                     <Button size="icon" type="button" variant="secondary" className="hover:bg-destructive/10 " onClick={handleDeleteCard}>
-                        <Trash2 className=" group-hover:stroke-destructive" />
+                        <Trash2 size={20} className=" group-hover:stroke-destructive" />
                     </Button>
                     <Button size="icon" type="button" variant="secondary"  className="hover:bg-[#D5DDEE] " onClick={handleEditCard}>
-                        < PenLine className=" group-hover:stroke-[#6D88B0]"/>
+                        < PenLine size={20} className=" group-hover:stroke-[#6D88B0]"/>
                     </Button>
                 </div>
             )}
         
         </div>
-        <h2 className="w-full h-full border border-black text-center self-center text-neutral-800 text-md  text-clip font-medium text-wrap"> 
-            {title} 
-        </h2>
+        <div className="flex h-full items-center align-middle justify-center">
+            <h1 className="text-center line-clamp-2 text-balance"> 
+                {title} 
+            </h1>
+        </div>
         <div className="w-full ">
             <div className="flex justify-between w-full">
                 <div className="w-full  ">
