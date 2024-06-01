@@ -1,10 +1,11 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import {Clock,  EllipsisVertical, Trash2, X, PenLine } from "lucide-react"
+import { EllipsisVertical, Trash2, X, PenLine, Calendar } from "lucide-react"
+import { EditProject } from "./edit-project";
 
 
-const Card = ({ id, title, progress, deadline } : {id: number; title: string; progress: number; deadline: string;}) => {
+const Card = ({ id, title, progress, priority, deadline, description } : {id: number; title: string; progress: number; priority: string; deadline: string; description: string;}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleOpenDropdown = () => {
@@ -16,10 +17,6 @@ const Card = ({ id, title, progress, deadline } : {id: number; title: string; pr
     console.log("Deleting card with ID", id);
   };
 
-  const handleEditCard = () => {
-    // Handle editing the card here
-    console.log("Editing card with ID", id);
-  };
 
   return (
     <article className="bg-white  border-2 border-primary flex flex-col items-stretch p-3 gap-2
@@ -41,9 +38,7 @@ const Card = ({ id, title, progress, deadline } : {id: number; title: string; pr
                     <Button size="icon" type="button" variant="secondary" className="hover:bg-destructive/10 " onClick={handleDeleteCard}>
                         <Trash2 size={20} className=" group-hover:stroke-destructive" />
                     </Button>
-                    <Button size="icon" type="button" variant="secondary"  className="hover:bg-[#D5DDEE] " onClick={handleEditCard}>
-                        < PenLine size={20} className=" group-hover:stroke-[#6D88B0]"/>
-                    </Button>
+                    <EditProject id={id} title={title} priority={priority} deadline={deadline} description={description}  />
                 </div>
             )}
         
@@ -68,11 +63,23 @@ const Card = ({ id, title, progress, deadline } : {id: number; title: string; pr
                 </div>
             </div>
         </div>
-       
-        <div className="flex flex-row items-center gap-1 justify-end w-full rounded-md">
-            <Clock size={ 16 } />
-            { deadline }
-        </div>
+       <div className="flex flex-row items-center justify-between w-full">
+        <div className="flex flex-row items-center gap-1 w-full rounded-md text-neutral-800 text-sm stroke-neutral-700">
+                <Calendar size={ 16 } />
+                { deadline }
+               
+            </div>
+            <div className={`${priority == 'высокий' ? " bg-accent/10  border-accent/40 text-accent" :"" } 
+           
+             ${priority === 'средний' ? " bg-[#F8D7B5]  border-[#CD8F3C] text-[#A16500]"  : ""}
+             ${priority === 'низкий' ? "bg-green-100  border-green-400 text-green-600" : "" }
+            
+            flex flex-row border text-sm items-center gap-1 rounded-md p-0.5`}>
+                { priority }
+            </div>
+
+       </div>
+        
     </article>
   );
 };

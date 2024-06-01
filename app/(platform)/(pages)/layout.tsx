@@ -14,7 +14,7 @@ const DashboardLayout = ({
 
     return (
         
-        <div className="w-full min-h-full transition-all flex flex-row bg-violet-100 gap-2 relative">
+        <div className="w-full min-h-full transition-all flex flex-row bg-primary/20 gap-2 relative">
             
             <div className="fixed">
                 <Sidebar expanded={expanded} />  

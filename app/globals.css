@@ -21,7 +21,7 @@
       --popover: 0 0% 100%;
       --popover-foreground: 0 0% 3.9%;
 
-      --primary: 270 60%, 64%;
+      --primary: 270 60% 64%;
       --primary-foreground: 0 0% 98%;
 
       --secondary: 0 0% 96.1%;
@@ -42,7 +42,7 @@
 
       --radius: 0.5rem;
 
-      --gradient: linear-gradient(129.19deg, #A46DDA 20.92%, #F7716D 99.27%);
+      --gradient: linear-gradient(129.19deg #A46DDA 20.92% #F7716D 99.27%);
     }
 
     .dark {
