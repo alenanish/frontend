@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+
 import { Logo } from "@/components/logo";
 import { PureLogo } from "@/components/purelogo";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,6 @@ import { useRouter, usePathname } from "next/navigation";
 export const Sidebar = ( {expanded} : {expanded: boolean} ) => {
     const router = useRouter();
     const pathname = usePathname();
-
     
     const Buttons = [
         {title: "Проекты", src: <LayoutDashboard />, path: "/dashboard"},

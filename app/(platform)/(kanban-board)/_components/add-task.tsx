@@ -12,32 +12,48 @@ import Select from 'react-select';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ChevronDown, ChevronUp, Plus } from "lucide-react";
+import { ChevronUp, Plus } from "lucide-react";
 
 import React, { useState } from 'react';
 
 import "@/app/style.css";
 
-const AddProject = () => {
+const AddTask = ({  projectId }: any) => {
     const [formData, setFormData] = useState({
-        project_title: '',
-        project_priority: '',
-        project_deadline: '',
-        project_description: ''
+        task_title: '',
+        task_priority: '',
+        task_deadline: '',
+        task_description: '',
+        task_assignee: '',
     });
 
+    
+  const  team =
+      [
+          { name: 'task_assignee', label: 'Высокий', value: 'high' },
+          { name: 'task_assignee', label: 'Средний', value: 'medium' },
+          { name: 'task_assignee', label: 'Низкий', value: 'low' },
+      ];
+
     const [selectedPriority, setSelectedPriority] = useState("");
+    const [selectedMembers, setSelectedMembers] = useState("");
 
     const handleSelectChange = (selectedOption: any) => {
         setSelectedPriority(selectedOption['value'])
       };
+
+      const handleSelectedMembers = (selectedOptions: any) => {
+        setSelectedMembers(selectedMembers)
+      };
+
 
     const handleChange = (e: { target: { name: any; value: any; }; }) => {
         const { name, value } = e.target;
         setFormData(prevState => ({
         ...prevState,
         [name]: value,
-        project_priority: selectedPriority,
+        task_priority: selectedPriority,
+        task_assignee: selectedMembers,
         }));
        
     };
@@ -141,22 +157,22 @@ const AddProject = () => {
             <Button type="button" variant="default" className="sm:px-2 md:gap-2">                    
             <Plus />
             <span className="hidden md:block">
-                Создать проект
+                Добавить задачу
             </span>                       
             </Button>
         </DialogTrigger>
         <DialogContent className=" h-fit w-max border-2 border-primary self-center justify-self-center md:w-2/6">
             <DialogHeader>
-            <DialogTitle> Создать проект</DialogTitle>
+            <DialogTitle> Добавить задачу</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="grid gap-4 py-4" >
             <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Label htmlFor="project_title">Название</Label>
+                <Label htmlFor="task_title">Название</Label>
                 <Input 
                 required 
                 type="text" 
-                id="project_title" 
-                name="project_title"
+                id="task_title" 
+                name="task_title"
                 placeholder="Введите название" 
                 onChange={handleChange}
                 />
@@ -164,40 +180,53 @@ const AddProject = () => {
 
             <div className="flex flex-row w-full justify-between gap-2  ">
                 <div className="grid w-fit items-center gap-1.5">
-                  <Label htmlFor="project_priority">Приоритет</Label>
-                    <Select name="project_priority"
+                  <Label htmlFor="task_priority">Приоритет</Label>
+                    <Select name="task_priority"
                       placeholder="Приоритет"
                       required
                       options={
                           [
-                              { name: 'project_priority', label: 'Высокий', value: 'high' },
-                              { name: 'project_priority', label: 'Средний', value: 'medium' },
-                              { name: 'project_priority', label: 'Низкий', value: 'low' },
+                              { name: 'task_priority', label: 'Высокий', value: 'high' },
+                              { name: 'task_priority', label: 'Средний', value: 'medium' },
+                              { name: 'task_priority', label: 'Низкий', value: 'low' },
                           ]
                       }
                       onChange={handleSelectChange}
                       styles={customSelectStyles}
                       />
                 </div>
+                
                 <div className="grid w-fit items-center gap-1.5">
-                <Label htmlFor="project_deadline">Дедлайн</Label>
+                <Label htmlFor="task_deadline">Дедлайн</Label>
                 <Input 
                     type="date" 
                     required
-                    id="project_deadline" 
-                    name="project_deadline"
+                    id="task_deadline" 
+                    name="task_deadline"
                     placeholder="Дедлайн" 
                     className="w-fit" 
                     onChange={handleChange}
                 />
                 </div>
             </div>
+            <div className="grid w-fit items-center gap-1.5">
+                  <Label htmlFor="task_priority">Назначить</Label>
+                    <Select name="task_priority"
+                      placeholder="Введите почту"
+                      required
+                      options={team}
+                      onChange={handleSelectedMembers}
+                      styles={customSelectStyles}
+                      isSearchable={true}
+                      isMulti
+                      />
+                </div>
             <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Label htmlFor="project_description">Описание проекта</Label>
+                <Label htmlFor="task_description">Описание </Label>
                 <Textarea 
-                placeholder="Введите описание проекта" 
-                id="project_description" 
-                name="project_description"
+                placeholder="Введите описание задачи" 
+                id="task_description" 
+                name="task_description"
                 onChange={handleChange}
                 />
             </div>
@@ -208,4 +237,4 @@ const AddProject = () => {
     );
     };
 
-    export default AddProject;
+    export default AddTask;

@@ -31,7 +31,7 @@ const DashboardLayout = ({
 
             </div>
                 
-            <div className={`${expanded? "ml-44" :"ml-20" }`}>
+            <div className={`${expanded? "ml-44" :"ml-20" } w-full`}>
                 <main>
                     {children}
                 </main>

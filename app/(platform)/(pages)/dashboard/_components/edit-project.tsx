@@ -143,7 +143,7 @@ export function EditProject({ id, title, priority, deadline, description } : {id
                 < PenLine size={20} className=" group-hover:stroke-[#6D88B0]"/>
             </Button>
         </DialogTrigger>
-        <DialogContent className="border-2 border-primary sm:max-w-[425px]">
+        <DialogContent className=" h-fit w-max border-2 border-primary self-center justify-self-center md:w-2/6">
             <DialogHeader>
             <DialogTitle> Изменить проект</DialogTitle>
             </DialogHeader>
@@ -161,13 +161,12 @@ export function EditProject({ id, title, priority, deadline, description } : {id
                 />
             </div>
 
-            <div className="flex flex-row gap-4 ">
-                <div className="grid w-full max-w-sm items-center gap-1.5">
+            <div className="flex flex-row w-full justify-between gap-2  ">
+                <div className="grid w-fit items-center gap-1.5">
                   <Label htmlFor="project_priority">Приоритет</Label>
                     <Select name="project_priority"
                       placeholder="Приоритет"
                       required
-                      
                       defaultInputValue={priority}
                       options={
                           [
@@ -180,7 +179,7 @@ export function EditProject({ id, title, priority, deadline, description } : {id
                       styles={customSelectStyles}
                       />
                 </div>
-                <div className="grid w-full max-w-sm items-center gap-1.5 ">
+                <div className="grid w-fit items-center gap-1.5">
                 <Label htmlFor="project_deadline">Дедлайн</Label>
                 <Input 
                     type="date" 
@@ -197,14 +196,14 @@ export function EditProject({ id, title, priority, deadline, description } : {id
             <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="project_description">Описание проекта</Label>
                 <Textarea 
-                defaultValue={description}
                 placeholder="Введите описание проекта" 
+                defaultValue={description}
                 id="project_description" 
                 name="project_description"
                 onChange={handleChange}
                 />
             </div>
-            <Button>Сохранит изменения</Button>
+            <Button>Сохранить изменения</Button>
             </form>
         </DialogContent>
         </Dialog>

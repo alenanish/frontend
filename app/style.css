@@ -2,3 +2,32 @@ mark, section {
     background: linear-gradient(129.19deg, #A46DDA 20.92%, #F7716D 99.27%);
     
 }
+
+.rbc-label {
+    @apply px-2 py-1 rounded-md text-xs font-medium;
+  }
+  
+  .rbc-label-default {
+    @apply bg-gray-200 text-gray-600;
+  }
+  
+  .rbc-label-primary {
+    @apply bg-blue-500 text-white;
+  }
+  
+  .rbc-label-success {
+    @apply bg-green-500 text-white;
+  }
+  
+  .rbc-label-info {
+    @apply bg-cyan-500 text-white;
+  }
+  
+  .rbc-label-warning {
+    @apply bg-orange-500 text-white;
+  }
+  
+  .rbc-label-danger {
+    @apply bg-red-500 text-white;
+  }
+  

@@ -8,13 +8,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import "@/app/style.css";
+import { redirect, useRouter } from 'next/navigation';
 
 
 const SignIn = () => {
     const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [password, setPassword] = useState(''); 
+    const router = useRouter();
 
     const handleLogin = () => {
+        /* 
         axios.post('http://localhost:8000/login/', {
             username: username,
             password: password
@@ -25,6 +28,12 @@ const SignIn = () => {
         .catch(error => {
             console.error(error);
         });
+        */
+
+        if (true) {
+            console.log('OK')
+            router.push('/dashboard')
+        }
     };
 
 

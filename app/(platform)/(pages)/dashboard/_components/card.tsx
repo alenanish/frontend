@@ -1,12 +1,17 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { EllipsisVertical, Trash2, X, PenLine, Calendar } from "lucide-react"
+import { EllipsisVertical, Trash2, X, Calendar } from "lucide-react"
 import { EditProject } from "./edit-project";
+
+import { useParams, useRouter } from "next/navigation";
+import Link from "next/link";
+
 
 
 const Card = ({ id, title, progress, priority, deadline, description } : {id: number; title: string; progress: number; priority: string; deadline: string; description: string;}) => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
 
   const handleOpenDropdown = () => {
     setIsOpen(!isOpen);
@@ -17,11 +22,15 @@ const Card = ({ id, title, progress, priority, deadline, description } : {id: nu
     console.log("Deleting card with ID", id);
   };
 
+  const handleCardClick = () => {
+    // Переход на канбан доску проекта с использованием ID карточки
+    router.push(`/project/${id}/board`);    
+  };
+
 
   return (
     <article className="bg-white  border-2 border-primary flex flex-col items-stretch p-3 gap-2
-                         shadow-[0px_4px_8px_rgba(0,0,0,0.5)] rounded-md w-[200px] h-[200px]">
-        
+                         shadow-[0px_4px_8px_rgba(0,0,0,0.5)] rounded-md w-[200px] h-[200px]" >
 
         <div className={`border border-black ${isOpen? " border-primary " : " border-white"} border self-end flex flex-row-reverse gap-1 bg-white rounded-lg m-0 p-0`} >
 
@@ -43,42 +52,46 @@ const Card = ({ id, title, progress, priority, deadline, description } : {id: nu
             )}
         
         </div>
-        <div className="flex h-full items-center align-middle justify-center">
-            <h1 className="text-center line-clamp-2 text-balance"> 
-                {title} 
-            </h1>
-        </div>
-        <div className="w-full ">
-            <div className="flex justify-between w-full">
-                <div className="w-full  ">
-                    Прогресс
+       
+                <div className="flex h-full items-center align-middle justify-center" onClick={handleCardClick}>
+                <Link key={id}
+                 href={`/project/${id}/board`}>
+                    <h1 className="text-center line-clamp-2 text-balance"> 
+                        {title} 
+                    </h1>
+                </Link>
                 </div>
-                <div className="  "> { progress }% </div>
-            </div>
-            <div className='h-2 w-full bg-neutral-300 rounded-md'>
-                <div
-                    style={{ width: `${progress}%`}}
-                    className={`rounded-md h-full ${
-                        progress < 70 ? 'bg-accent' : 'bg-primary'}`}>
+                <div className="w-full ">
+                    <div className="flex justify-between w-full">
+                        <div className="w-full  ">
+                            Прогресс
+                        </div>
+                        <div className="  "> { progress }% </div>
+                    </div>
+                    <div className='h-2 w-full bg-neutral-300 rounded-md'>
+                        <div
+                            style={{ width: `${progress}%`}}
+                            className={`rounded-md h-full ${
+                                progress < 70 ? 'bg-accent' : 'bg-primary'}`}>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-       <div className="flex flex-row items-center justify-between w-full">
-        <div className="flex flex-row items-center gap-1 w-full rounded-md text-neutral-800 text-sm stroke-neutral-700">
-                <Calendar size={ 16 } />
-                { deadline.split("-").reverse().join(".") }
-               
-            </div>
-            <div className={`${priority == 'Высокий' ? " bg-accent/10  border-accent/40 text-accent" :"" } 
-           
-             ${priority === 'Средний' ? " bg-[#F8D7B5]  border-[#CD8F3C] text-[#A16500]"  : ""}
-             ${priority === 'Низкий' ? "bg-green-100  border-green-400 text-green-600" : "" }
-            
-            flex flex-row border text-sm items-center gap-1 rounded-md p-0.5`}>
-                { priority }
-            </div>
+            <div className="flex flex-row items-center justify-between w-full">
+                <div className="flex flex-row items-center gap-1 w-full rounded-md text-neutral-800 text-sm stroke-neutral-700">
+                        <Calendar size={ 16 } />
+                        { deadline.split("-").reverse().join(".") }
+                    
+                    </div>
+                    <div className={`${priority == 'Высокий' ? " bg-accent/10  border-accent/40 text-accent" :"" } 
+                
+                    ${priority === 'Средний' ? " bg-[#F8D7B5]  border-[#CD8F3C] text-[#A16500]"  : ""}
+                    ${priority === 'Низкий' ? "bg-green-100  border-green-400 text-green-600" : "" }
+                    
+                    flex flex-row border text-sm items-center gap-1 rounded-md p-0.5`}>
+                        { priority }
+                    </div>
 
-       </div>
+            </div>
         
     </article>
   );
