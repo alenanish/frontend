@@ -66,13 +66,13 @@ const Card = ({ id, title, progress, priority, deadline, description } : {id: nu
        <div className="flex flex-row items-center justify-between w-full">
         <div className="flex flex-row items-center gap-1 w-full rounded-md text-neutral-800 text-sm stroke-neutral-700">
                 <Calendar size={ 16 } />
-                { deadline }
+                { deadline.split("-").reverse().join(".") }
                
             </div>
-            <div className={`${priority == 'высокий' ? " bg-accent/10  border-accent/40 text-accent" :"" } 
+            <div className={`${priority == 'Высокий' ? " bg-accent/10  border-accent/40 text-accent" :"" } 
            
-             ${priority === 'средний' ? " bg-[#F8D7B5]  border-[#CD8F3C] text-[#A16500]"  : ""}
-             ${priority === 'низкий' ? "bg-green-100  border-green-400 text-green-600" : "" }
+             ${priority === 'Средний' ? " bg-[#F8D7B5]  border-[#CD8F3C] text-[#A16500]"  : ""}
+             ${priority === 'Низкий' ? "bg-green-100  border-green-400 text-green-600" : "" }
             
             flex flex-row border text-sm items-center gap-1 rounded-md p-0.5`}>
                 { priority }
