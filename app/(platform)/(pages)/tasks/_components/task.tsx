@@ -1,18 +1,14 @@
 "use client";
 import React, { useState } from "react";
 
-import { useParams, useRouter } from "next/navigation";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 
 
-const Task = ({ id, title, priority, deadline, description, board } : {id: number; title: string;priority: string; deadline: string; description: string;  board: any; }) => {
-  const router = useRouter();
-
- 
-
-
+const Task = ({ id, title, priority, deadline, description, board } : {id: number; title: string; priority: string; deadline: string; description: string;  board: any; }) => {
+  
   return (
     <article className="flex w-full h-fit p-1" >
 
@@ -27,7 +23,6 @@ const Task = ({ id, title, priority, deadline, description, board } : {id: numbe
                  border text-sm items-center gap-1 rounded-md p-0.5 w-fit h-fit`}>
                     { priority }
                 </div>
-       
        </div>
        
        <div className="w-1/5  text-clip">{description}</div>

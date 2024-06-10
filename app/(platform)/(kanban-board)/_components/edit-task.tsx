@@ -12,13 +12,15 @@ import Select from 'react-select';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { ChevronUp, Plus } from "lucide-react";
+import { ChevronUp, PenLine, Plus } from "lucide-react";
 
 import React, { useState } from 'react';
 
 import "@/app/style.css";
 
-const AddTask = ({  projectId, taskId, triger, status }: any) => {
+//
+
+const EditTask = ({  projectId, status, TaskId, team_members, title, priority, deadline, description  }: any) => {
     const [formData, setFormData] = useState({
         task_title: '',
         task_priority: '',
@@ -155,11 +157,13 @@ const AddTask = ({  projectId, taskId, triger, status }: any) => {
     return (
         <Dialog >
         <DialogTrigger asChild>
-            {triger}
+            <Button size="icon" type="button" variant="secondary"  className="hover:bg-[#D5DDEE] ">
+                < PenLine size={20} className=" group-hover:stroke-[#6D88B0]"/>
+            </Button>
         </DialogTrigger>
         <DialogContent className=" h-fit w-max border-2 border-primary self-center justify-self-center md:w-2/6">
             <DialogHeader>
-            <DialogTitle> Добавить задачу</DialogTitle>
+            <DialogTitle> Изменить задачу</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="grid gap-4 py-4" >
             <div className="grid w-full max-w-sm items-center gap-1.5">
@@ -167,6 +171,7 @@ const AddTask = ({  projectId, taskId, triger, status }: any) => {
                 <Input 
                 required 
                 type="text" 
+                defaultValue={title}
                 id="task_title" 
                 name="task_title"
                 placeholder="Введите название" 
@@ -180,6 +185,7 @@ const AddTask = ({  projectId, taskId, triger, status }: any) => {
                     <Select name="task_priority"
                       placeholder="Приоритет"
                       required
+                      defaultInputValue={priority}
                       options={
                           [
                               { name: 'task_priority', label: 'Высокий', value: 'high' },
@@ -197,6 +203,7 @@ const AddTask = ({  projectId, taskId, triger, status }: any) => {
                 <Input 
                     type="date" 
                     required
+                    defaultValue={deadline}
                     id="task_deadline" 
                     name="task_deadline"
                     placeholder="Дедлайн" 
@@ -210,6 +217,7 @@ const AddTask = ({  projectId, taskId, triger, status }: any) => {
                     <Select name="task_priority"
                       placeholder="Введите почту"
                       required
+                      defaultInputValue={team_members}
                       options={team}
                       onChange={handleSelectedMembers}
                       styles={customSelectStyles}
@@ -222,15 +230,16 @@ const AddTask = ({  projectId, taskId, triger, status }: any) => {
                 <Textarea 
                 placeholder="Введите описание задачи" 
                 id="task_description" 
+                defaultValue={description}
                 name="task_description"
                 onChange={handleChange}
                 />
             </div>
-            <Button>Добавить</Button>
+            <Button>Сохранить изменения</Button>
             </form>
         </DialogContent>
         </Dialog>
     );
     };
 
-    export default AddTask;
+    export default EditTask;
