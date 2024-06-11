@@ -1,15 +1,16 @@
 "use client";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { EllipsisVertical, Trash2, X, Calendar } from "lucide-react"
-import { EditProject } from "./edit-project";
+import { EllipsisVertical, Trash2, X } from "lucide-react"
+import { BoardAction } from "./board-actions";
 
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
+import axios from "axios";
 
 
 
-const Card = ({ id, title, progress, priority, deadline, description } : {id: number; title: string; progress: number; priority: string; deadline: string; description: string;}) => {
+const BoardCard = ({ id, title, progress, description } : {id: number; title: string; progress: number; description: string;}) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
@@ -20,7 +21,12 @@ const Card = ({ id, title, progress, priority, deadline, description } : {id: nu
   const handleDeleteCard = () => {
     // Handle deleting the card here
     console.log("Deleting card with ID", id);
+    axios
+      .delete(`http://localhost:8000/api/boards/${id}/`)
+      ;
   };
+
+
 
   const handleCardClick = () => {
     // Переход на канбан доску проекта с использованием ID карточки
@@ -47,7 +53,7 @@ const Card = ({ id, title, progress, priority, deadline, description } : {id: nu
                     <Button size="icon" type="button" variant="secondary" className="hover:bg-destructive/10 " onClick={handleDeleteCard}>
                         <Trash2 size={20} className=" group-hover:stroke-destructive" />
                     </Button>
-                    <EditProject id={id} title={title} priority={priority} deadline={deadline} description={description}  />
+                    <BoardAction board_id={id} board_title={title} board_description={description}  board_progress={progress}/>
                 </div>
             )}
         
@@ -75,26 +81,9 @@ const Card = ({ id, title, progress, priority, deadline, description } : {id: nu
                                 progress < 70 ? 'bg-accent' : 'bg-primary'}`}>
                         </div>
                     </div>
-                </div>
-            <div className="flex flex-row items-center justify-between w-full">
-                <div className="flex flex-row items-center gap-1 w-full rounded-md text-neutral-800 text-sm stroke-neutral-700">
-                        <Calendar size={ 16 } />
-                        { deadline.split("-").reverse().join(".") }
-                    
-                    </div>
-                    <div className={`${priority == 'Высокий' ? " bg-accent/10  border-accent/40 text-accent" :"" } 
-                
-                    ${priority === 'Средний' ? " bg-[#F8D7B5]  border-[#CD8F3C] text-[#A16500]"  : ""}
-                    ${priority === 'Низкий' ? "bg-green-100  border-green-400 text-green-600" : "" }
-                    
-                    flex flex-row border text-sm items-center gap-1 rounded-md p-0.5`}>
-                        { priority }
-                    </div>
-
-            </div>
-        
+                </div>        
     </article>
   );
 };
 
-export default Card;
+export default BoardCard;
