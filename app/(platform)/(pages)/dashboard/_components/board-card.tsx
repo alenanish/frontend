@@ -26,11 +26,9 @@ const BoardCard = ({ id, title, progress, description } : {id: number; title: st
       ;
   };
 
-
-
   const handleCardClick = () => {
     // Переход на канбан доску проекта с использованием ID карточки
-    router.push(`/project/${id}/board`);    
+    router.push(`/project/${id}/board/`);    
   };
 
 
@@ -58,7 +56,8 @@ const BoardCard = ({ id, title, progress, description } : {id: number; title: st
             )}
         
         </div>
-       
+          
+
                 <div className="flex h-full items-center align-middle justify-center" onClick={handleCardClick}>
                 <Link key={id}
                  href={`/project/${id}/board`}>

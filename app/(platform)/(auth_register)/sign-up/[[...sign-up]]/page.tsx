@@ -8,26 +8,53 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import "@/app/style.css";
+import { useRouter } from 'next/navigation';
 
 
 const SignUp = () => {
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [res, setPost] = useState(true);
+    const router = useRouter();
 
-    const handleRegister = () => {
-        axios.post('http://localhost:8000/register/', {
-            username: username,
-            email: email,
-            password: password
-        })
-        .then(response => {
-            console.log(response.data);
-        })
-        .catch(error => {
-            console.error(error);
-        });
+
+    let config = {
+        headers: {
+          "Content-Type": "application/json",
+          'Access-Control-Allow-Origin': '*',
+          }
+    }
+
+    const [formData, setFormData] = useState({
+        username: '',
+        email: '',
+        password: '',
+
+    });
+
+    const handleChange = (e: { target: { name: any; value: any; }; }) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+        ...prevState,
+        [name]: value,
+        }));
+       
     };
+
+
+
+    const handleSubmit = async (e : any) => {
+        e.preventDefault();
+
+        try {
+
+          const response = await axios.post("http://127.0.0.1:8000/api/register/", formData);
+          setPost(response.data);
+
+          console.log('Registration successful:', response.data);
+          router.push('/sign-in');
+        } catch (error) {
+          console.error('Registration failed:', error); 
+        }
+      };
 
     return (
         <div className="w-full flex-col flex place-items-center">
@@ -35,25 +62,25 @@ const SignUp = () => {
                 Регистрация
             </h2>
             
-            <div className="grid w-full max-w-sm gap-1.5 mb-2">
-                <Label htmlFor="username">Имя</Label>
-                <Input type="text" id="username" placeholder="Введите имя" onChange={e => setUsername(e.target.value)} />
-            </div>
-            <div className="grid w-full max-w-sm gap-1.5 mb-4">
-                <Label htmlFor="email">Эл. почта</Label>
-                <Input type="email" id="email" placeholder="Введите адрес эл. почты" onChange={e => setEmail(e.target.value)} />
-            </div>
-            <div className="grid w-full max-w-sm gap-1.5 mb-4">
-                <Label htmlFor="password">Пароль</Label>
-                <Input type="password" id="password" placeholder="Придумайте пароль" onChange={e => setPassword(e.target.value)} />
-            </div>
-            <div className="grid w-full max-w-sm gap-1.5 mb-4">
-                <Label htmlFor="confirm_password">Подтверждение пароля</Label>
-                <Input type="password" id="confirm_password" placeholder="Повторите пароль" />
-            </div>    
-            <Button type="submit" size="lg" className="max-w-sm mb-4 w-full">
-                Зарегистрироваться
-            </Button>
+            <form className="w-full flex-col flex place-items-center" onSubmit={handleSubmit}>
+                <div className="grid w-full max-w-sm gap-1.5 mb-2">
+                    <Label htmlFor="username">Имя</Label>
+                    <Input name='username' required type="text" id="username" placeholder="Введите имя" onChange={handleChange} />
+                </div>
+
+                <div className="grid w-full max-w-sm gap-1.5 mb-4">
+                    <Label htmlFor="email">Эл. почта</Label>
+                    <Input name="email" required type="email" id="email" placeholder="Введите адрес эл. почты" onChange={handleChange} />
+                </div>
+                <div className="grid w-full max-w-sm gap-1.5 mb-4">
+                    <Label htmlFor="password">Пароль</Label>
+                    <Input required minLength={6} name="password" type="password" id="password" placeholder="Придумайте пароль" onChange={handleChange} />
+                </div>
+                  
+                <Button type="submit" size="lg" className="max-w-sm mb-4 w-full">
+                    Зарегистрироваться
+                </Button>
+            </form>
             <div className="inline-block w-full max-w-sm gap-3   ">
                 <i className=" text-sm text-[#49296C] mr-2">Уже есть аккаунт?</i>
                 <Link className="  text-sm italic underline text-neutral-800" href="/sign-in">

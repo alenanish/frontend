@@ -12,29 +12,54 @@ import { redirect, useRouter } from 'next/navigation';
 
 
 const SignIn = () => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState(''); 
+    const [res, setPost] = useState(true);
     const router = useRouter();
+    const [isLoggedIn, setIsLoggedIn] = useState(true);
 
-    const handleLogin = () => {
-        /* 
-        axios.post('http://localhost:8000/login/', {
-            username: username,
-            password: password
-        })
-        .then(response => {
-            console.log(response.data);
-        })
-        .catch(error => {
-            console.error(error);
-        });
-        */
+    const [formData, setFormData] = useState({
+        username: '',
+        password: '',
 
-        if (true) {
-            console.log('OK')
-            router.push('/dashboard')
-        }
+    });
+
+     let config = {
+        headers: {
+          "Content-Type": "application/json",
+          'Access-Control-Allow-Origin': '*',
+          }
+    }
+
+    const handleChange = (e: { target: { name: any; value: any; }; }) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+        ...prevState,
+        [name]: value,
+        }));
+
     };
+
+
+
+
+    const handleSubmit = async (e : any) => {
+        e.preventDefault();
+
+        try {
+
+          const response = await axios.post("http://127.0.0.1:8000/api/login/", formData);
+          setPost(response.data);
+
+          console.log('Login successful:', response.data);
+          localStorage.setItem('auth', response.data.access);
+          localStorage.setItem('refresh', response.data.refresh);
+          router.push('/dashboard');
+        } catch (error) {
+          console.error('Login failed:', error);
+
+
+        }
+      };
+
 
 
     return (
@@ -45,23 +70,25 @@ const SignIn = () => {
             <p className="text-md max-w-sm md:text-md text-neutral-800 mb-4">
                 Пожалуйста, войдите в систему, чтобы получить доступ к учетной записи.
             </p>
-            <div className="grid w-full max-w-sm items-center gap-1.5 mb-2">
-                <Label htmlFor="username">Логин</Label>
-                <Input required type="text" id="username" placeholder="Логин" onChange={e => setUsername(e.target.value)} />
-            </div>
-            <div className="grid w-full max-w-sm items-center gap-1.5 mb-4">
-                <Label htmlFor="password">Пароль</Label>
-                <Input required type="password" id="password" placeholder="Пароль" onChange={e => setPassword(e.target.value)}  />
-            </div>  
-                
-            <Button type="submit" size="lg" className="max-w-sm mb-4 w-full" onClick={handleLogin}>
-                Войти
-            </Button>
-            <Button variant="outline" size="lg" asChild className="max-w-sm w-full">
-                <Link href="/sign-up">
-                Зарегистрироваться
-                </Link>
-            </Button>
+            <form onSubmit={handleSubmit}>
+                <div className="grid w-full max-w-sm items-center gap-1.5 mb-2">
+                    <Label htmlFor="username">Имя пользователя</Label>
+                    <Input required type="text" name="username" id="username" placeholder="Введите имя пользователя" onChange={handleChange} />
+                </div>
+                <div className="grid w-full max-w-sm items-center gap-1.5 mb-4">
+                    <Label htmlFor="password">Пароль</Label>
+                    <Input required type="password" name="password" id="password" placeholder="Введите имя пользователя" onChange={handleChange}  />
+                </div>
+
+                <Button type="submit" size="lg" className="max-w-sm mb-4 w-full">
+                    Войти
+                </Button>
+                <Button variant="outline" size="lg" asChild className="max-w-sm w-full">
+                    <Link href="/sign-up">
+                    Зарегистрироваться
+                    </Link>
+                </Button>
+            </form>
         </div>
     );
 };

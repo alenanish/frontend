@@ -16,8 +16,7 @@ export const BoardNavbar = ( {id} : BoardNavbarProps ) => {
 
     const Buttons = [
         {title: "Доска",  path: `/project/${id}/board`},
-        {title: "Команда", path: `/project/${id}/team`},
-        {title: "Обзор", path: `/project/${id}/overview`},            
+        {title: "Команда", path: `/project/${id}/team`},           
     ]
    
 

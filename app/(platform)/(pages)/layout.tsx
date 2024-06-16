@@ -3,6 +3,7 @@ import { Sidebar } from "./_components/sidebar"
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import AuthChecker from "@/app/AuthChecker";
 
 
 const DashboardLayout = ({
@@ -13,6 +14,8 @@ const DashboardLayout = ({
     const [expanded, setExpanded] = useState(true);
 
     return (
+        
+        <AuthChecker url={'/sign-in'}>
         
         <div className="w-full min-h-full transition-all flex flex-row bg-primary/20 gap-2 relative">
             
@@ -39,6 +42,7 @@ const DashboardLayout = ({
             </div>
             
         </div>
+        </AuthChecker>
     );
 };
 

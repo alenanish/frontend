@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import Select from 'react-select';
+
   
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,9 +20,8 @@ import "@/app/style.css";
 import axios from "axios";
 
 
-export function BoardAction({ board_id, board_title, board_progress, board_description } : {board_id: any; board_title: string; board_progress: number, board_description: string;}) {
+export function BoardAction({ board_id, board_title, board_progress, board_description } : {board_id: number | null; board_title: string; board_progress: number, board_description: string;}) {
     const [post, setPost] = React.useState(null);
-
 
     const [formData, setFormData] = useState({
         id: board_id,
@@ -92,7 +91,7 @@ export function BoardAction({ board_id, board_title, board_progress, board_descr
         </DialogTrigger>
         <DialogContent className=" h-fit w-max border-2 border-primary self-center justify-self-center md:w-2/6">
             <DialogHeader>
-            <DialogTitle> Изменить проект</DialogTitle>
+            <DialogTitle> { formData.id ? <span>Изменить проект</span> : <span>Добавить проект</span> }</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubmit} className="grid gap-4 py-4" >
             <div className="grid w-full max-w-sm items-center gap-1.5">

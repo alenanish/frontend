@@ -8,19 +8,26 @@ import Link from "next/link";
 import "@/app/style.css";
 import { LayoutDashboard, LayoutList, Calendar, Settings, LogOut } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
+import axios from "axios";
 
 
 
 export const Sidebar = ( {expanded} : {expanded: boolean} ) => {
     const router = useRouter();
     const pathname = usePathname();
+
+    const handleLogOut = () => {
+        localStorage.removeItem('auth');
+        localStorage.removeItem('refresh');
+        router.push('/sign-in')
+    }
     
     const Buttons = [
         {title: "Проекты", src: <LayoutDashboard />, path: "/dashboard"},
         {title: "Задачи", src: <LayoutList />, path: "/tasks"},
         {title: "Календарь", src: <Calendar />, path: "/calendar"},
         {title: "Настройки", src: <Settings />, path: "/settings"},
-        {title: "Выход", src: <LogOut />, path: "/"},
+    
             
     ]
    
@@ -50,10 +57,17 @@ export const Sidebar = ( {expanded} : {expanded: boolean} ) => {
                                 
                             </Button>
                         ))
+                        
                       }
+                      <Button variant="ghost"  className="w-full flex flex-row justify-start m-0 py-4 px-2 gap-2 rounded-lg
+                            last:absolute last:bottom-0 border-l-2 border-white" onClick={handleLogOut}> 
+                                <LogOut />
+                                <span className={`${!expanded && "hidden"} origin-left text-lg`}>Выход</span>
+                            </Button>
                     </div>
                 
                 </div>
         </aside>
     );
 };
+

@@ -25,7 +25,7 @@ const ProjectLayout = ({
 
                     </Button>
                     <h1 className="block text-3xl font-medium text-neutral-800">
-                            project.title
+                        Проект 1
                     </h1>
                     
                 </div>

@@ -2,6 +2,7 @@ import { Logo } from "@/components/logo";
 
 import "@/app/style.css";
 import Link from "next/link";
+import AuthChecker from "@/app/AuthChecker";
 
 
 const AuthRegisterLayout = ({
@@ -10,6 +11,7 @@ const AuthRegisterLayout = ({
     children: React.ReactNode;
 }) => {
     return (
+        
         <section className="h-full p-6 w-full flex items-start justify-center">
             <div className="bg-white p-4 rounded-md h-[96%] min-w-full 
             inline-grid
