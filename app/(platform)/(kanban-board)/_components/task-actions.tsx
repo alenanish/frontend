@@ -14,32 +14,62 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { PenLine, Plus } from "lucide-react";
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import "@/app/style.css";
 import axios from "axios";
 
+interface Team {
+  id: number,
+  first_name : string,
+  last_name: string,
+  username : string,
+  permission: string,
+};
 
-export function TaskAction({trigger, task_id, task_title, task_priority, task_description, task_created_at, task_deadline, task_on_board, task_assignee, task_status } 
-    : {trigger: any; task_id: number | null; task_title: string; task_priority: string; task_description: string; task_created_at: string; task_deadline: string | null; task_on_board: number; task_assignee: string | null; task_status: string; }) {
+
+export function TaskAction({boardId, trigger, task_id, task_title, task_priority, task_description, task_created_at, task_deadline, task_on_board, task_assignee, task_status } 
+    : {boardId: number; trigger: any; task_id: number | null; task_title: string; task_priority: string; task_description: string; task_created_at: string; task_deadline: string | null; task_on_board: number; task_assignee: string | null; task_status: string; }) {
     const [post, setPost] = React.useState(null);
+
+      
+interface Team {
+  id: number,
+  first_name : string,
+  last_name: string,
+  username : string,
+  permission: string,
+};
+
+const [Team, setTeam] = useState([]);
+
+
+    const fetchTeam = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/project/${boardId}/team/`, {
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('auth'),
+          }
+        })
+
+        setTeam(response.data);
+        console.log('Team: ', Team)
+      } catch (error) {
+        console.error('Ошибка при получении данных:', error);
+      }
+    };
+
+    useEffect(() => {
+        fetchTeam();
+        
+    }, [],
+    );
     
     const [selectedPriority, setSelectedPriority] = useState("");
     const [selectedMember, setSelectedMember] = useState("");
 
-const team = [
-    {id: 1, name: 'Stepan', surname: 'Stepanov', email: 'stepa@gmail.com'},
-    {id: 2, name: 'Vasya', surname: 'Vasiliev', email: 'vvasya@gmail.com'},
-    {id: 3, name: 'Nady', surname: 'Klinova', email: 'nklinnova@gmail.com'},
-    {id: 4, name: 'Vera', surname: 'Stepanova', email: 'stepanovav@gmail.com'},
-
-
-]
-
     const handleSelectChange = (selectedOption: any) => {
         setSelectedPriority(selectedOption['value'])
-        
-
       };
 
       const handleSelectedMember = (selectedOptions: any) => {
@@ -61,52 +91,55 @@ const team = [
 
     
 
-
     const handleChange = (e: { target: { name: any; value: any; }; }) => {
-      const { name, value } = e.target;
-      setFormData(prevState => ({
-      ...prevState,
-      [name]: value,
-      priority: selectedPriority,
-      assignee: selectedMember,
-      }));
-     
-  };
-
-  const dialogClose = () => {
-      document.getElementById('closeDialog')?.click();
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+        ...prevState,
+        [name]: value,
+        priority: selectedPriority === 'Средний' ? 'medium':  selectedPriority === 'Высокий' ? 'high': 'low',
+        assignee: selectedMember,
+        }));
+       
     };
 
-  const handleSubmit = (e: { preventDefault: () => void; }) => {
-      e.preventDefault();
-      console.log({
-      ...formData,
-      
-      });
-    if (formData.id) {
-      // if old post to edit and submit
-      axios
-        .patch(`http://localhost:8000/api/project/tasks/${formData.id}/`, formData)
-        .then((response) => {
-          setPost(response.data);
-        });
-        
-      dialogClose(); 
-      return;
-    }
+    const dialogClose = () => {
+        document.getElementById('closeDialog')?.click();
+      };
 
-    axios
-      .post("http://localhost:8000/api/boards/", formData, {
-          headers: {
-            'Authorization': 'Bearer realm=' + localStorage.getItem('auth'), 
-          }
-        })
-      .then((response) => {
-          setPost(response.data);
+    const handleSubmit = (e: { preventDefault: () => void; }) => {
+        e.preventDefault();
+        console.log({
+        ...formData,
+        
+        });
+      if (formData.id) {
+        // if old post to edit and submit
+        axios
+          .patch(`http://localhost:8000/api/project/${formData.on_board}/board/${formData.id}/`, formData, {
+            headers: {
+              'Authorization': 'Bearer ' + localStorage.getItem('auth'),
+            }
+          })
+          .then((response) => {
+            setPost(response.data);
           });
-      
-      dialogClose(); 
-  };
+          
+        dialogClose(); 
+        return;
+      }
+
+      axios
+        .post(`http://localhost:8000/api/project/${formData.on_board}/board/`, formData, {
+            headers: {
+              'Authorization': 'Bearer ' + localStorage.getItem('auth'), 
+            }
+          })
+        .then((response) => {
+            setPost(response.data);
+            });
+        
+        dialogClose(); 
+    };
 
     const customSelectStyles = {
       container: (baseStyles: any) => ({
@@ -220,7 +253,7 @@ const team = [
                     id="created_at" 
                     name="created_at"
                     defaultValue={ task_created_at }  
-                    min={ task_created_at }           
+                    min ={ task_created_at }           
                     placeholder="Создано" 
                     className="w-fit" 
                     onChange={handleChange}
@@ -233,7 +266,8 @@ const team = [
                     required
                     id="deadline" 
                     name="deadline"
-                    defaultValue={ task_deadline ? task_deadline : ' ' }             
+                    defaultValue={ task_deadline ? task_deadline : ' ' }   
+                    min={ task_created_at }          
                     placeholder="Дедлайн" 
                     className="w-fit" 
                     onChange={handleChange}
@@ -266,20 +300,14 @@ const team = [
                     <Select name="assignee"
                       placeholder="Введите почту"
 
-                      defaultInputValue={ task_assignee === null ? undefined : task_assignee}
-                      options={
-                            [
-                                { label: 'Stepanov', value: 'stepa@gmail.com'},
-                                { label: 'Vasiliev', value: 'vvasya@gmail.com'},
-                                { label: 'Klinova', value: 'nklinnova@gmail.com'},
-                                { label: 'Stepanova', value: 'stepanovav@gmail.com'},
-                            ] 
-                      }                     
+                      defaultInputValue={ !task_assignee ? '' : task_assignee}
+                      options={Team}
+                                    
                       onChange={handleSelectedMember}
                       styles={customSelectStyles }
                       />
                 </div>
-              </div>
+              </div>  
 
           
             <div className="grid w-full max-w-sm items-center gap-1.5">

@@ -1,7 +1,6 @@
 import { ChevronLeft } from "lucide-react";
 import { BoardNavbar } from "../../_components/board-navbar";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
 
 
 const ProjectLayout = ({
@@ -10,7 +9,7 @@ const ProjectLayout = ({
    
 }: {
     children: React.ReactNode;
-    params: {projectId : number};
+    params: {boardId : any};
 })  => { 
 
 
@@ -25,17 +24,17 @@ const ProjectLayout = ({
 
                     </Button>
                     <h1 className="block text-3xl font-medium text-neutral-800">
-                        Проект {params.projectId}
+                        Проект {params.boardId}
                     </h1>
                     
                 </div>
-                <BoardNavbar id={params.projectId} />
+                <BoardNavbar id={params.boardId} />
 
             </header>
        
         
                 <main className="flex w-full">
-                    { children }
+                    {children}
                 </main>            
         </div>
 

@@ -20,7 +20,7 @@ const BoardCard = ({ id, title, progress, description } : {id: number; title: st
 
   const handleDelete = async () => {
     try {
-      await axios.delete("http://127.0.0.1:8000/api/boards/${id}/", {
+      await axios.delete(`http://localhost:8000/api/boards/${id}/`, {
         headers: {
           'Authorization': 'Bearer ' + localStorage.getItem('auth'),
         }
@@ -32,17 +32,8 @@ const BoardCard = ({ id, title, progress, description } : {id: number; title: st
 
 
   const handleCardClick = () => {
-    // Переход на канбан доску проекта с использованием ID карточки
-    //router.push(/project/${id}/board/);
-    console.log(id, title, progress)
-    const response =  axios.get(`http://127.0.0.1:8000/api/project/${id}/board/`, { // Используйте шаблонные строки для подстановки id
-          headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('auth'),
-          }
-        })
-
-        console.log(response)
-
+    console.log(id);
+    router.push(`/project/${id}/board/`);
 
   };
 

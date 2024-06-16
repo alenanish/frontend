@@ -1,7 +1,7 @@
 "use client"
 
 import { Button } from "@/components/ui/button";
-import { PenLine, Plus } from "lucide-react";
+import {  Plus } from "lucide-react";
 import TaskAction from "../../../_components/task-actions";
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import { Column } from "../../../_components/column";
@@ -24,19 +24,21 @@ export default function BoardPage({ params }: { params: { boardId: number } }) {
     assignee: string,
 };
 
-const [Tasks, setTasks] = useState([]);
 
+
+const [Tasks, setTasks] = useState([]);
 
   const fetchData = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/project/${params.boardId}/board/`, {
+        console.log(params.boardId)
+        const response = await axios.get(`http://localhost:8000/api/project/${params.boardId}/board/`, {
           headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('auth'),
           }
         })
 
         setTasks(response.data);
-        console.log(Tasks)
+        console.log('Tasks: ', Tasks)
       } catch (error) {
         console.error('Ошибка при получении данных:', error);
       }
@@ -57,7 +59,7 @@ const [Tasks, setTasks] = useState([]);
   return (
   <div className="w-full">
     <div className="w-fit h-fit absolute top-10 right-6">
-      <TaskAction  task_id={null} task_title={''} task_priority={''} task_description={''} task_created_at={ '' } task_deadline={null} task_on_board={params.boardId} task_assignee={null} task_status={'to-do'}
+      <TaskAction boardId={params.boardId} task_id={null} task_title={''} task_priority={''} task_description={''} task_created_at={ '' } task_deadline={null} task_on_board={params.boardId} task_assignee={null} task_status={'to-do'}
         trigger={
           <Button type="button" variant="default" className="sm:px-2 md:gap-2">
                         <Plus />

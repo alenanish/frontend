@@ -51,15 +51,18 @@ export function BoardAction({ board_id, board_title, board_progress, board_descr
         
         });
       if (formData.id) {
-        // if old post to edit and submit
-        axios
-          .patch(`http://localhost:8000/api/boards/${formData.id}/`, formData)
-          .then((response) => {
+        console.log(formData.id)
+        axios          
+            .patch(`http://localhost:8000/api/boards/${formData.id}/`, formData, {
+            headers: {
+              'Authorization': 'Bearer ' + localStorage.getItem('auth'), 
+            }
+          })
+        .then((response) => {
             setPost(response.data);
-          });
-          
-        dialogClose(); 
-        return;
+            });
+            dialogClose(); 
+            return;
       }
 
       axios

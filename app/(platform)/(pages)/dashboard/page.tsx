@@ -17,7 +17,7 @@ const DashboardPage =  () => {
 
     const [Projects, setProjects] = useState([]);
 
-    const apiURL = "http://127.0.0.1:8000/api/boards/";
+    const apiURL = "http://localhost:8000/api/boards/";
 
     const fetchData = async () => {
         try {
