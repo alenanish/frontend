@@ -1,18 +1,43 @@
-import React from 'react'; 
+"use client";
+
+import React, { useEffect, useState } from 'react'; 
 import axios from 'axios';
 import Task from './_components/task';
 
 
 const TasksPage = () => {
-    const Tasks = [ 
-        {id: 1, title: "За 1", description: "задача 1",  deadline: "2024-06-12", priority: 'Средний', board: '2'},
-        {id: 2, title: "Задача 2", description: "", deadline: "2024-06-12", priority: 'Высокий', board: '3'},
-        {id: 3, title: "Задача 3", description: "jdfak jsdnfsa", deadline: "2024-06-12", priority: 'Низкий', board: '2'},
-        {id: 4, title: "Задача 4", description: "",  deadline: "2024-06-12", priority: 'Средний', board: '5'},
-        {id: 5, title: "Задача 5", description: "sljkl k", deadline: "2024-06-12", priority: 'Средний', board: '1'},
+    interface Task {
+        id: number,
+        title : string, 
+        description: string,
+        deadline : string, 
+        priority: string,
+        on_board: number,
+    };
 
+    const [Tasks, setTasks] = useState([]);
 
-    ];
+    const apiURL = "http://127.0.0.1:8000/api/tasks/";
+
+    const fetchData = async () => {
+        try {
+          const response = await axios.get(apiURL, {
+            headers: {
+              'Authorization': 'Bearer ' + localStorage.getItem('auth'),
+            }
+          }) 
+          setTasks(response.data);
+          console.log(Tasks)
+        } catch (error) {
+          console.error('Ошибка при получении данных:', error);
+        }
+      };
+
+    useEffect(() => {
+        fetchData(); 
+    }, [], 
+    ); 
+    
 
     return (
         <div className=" flex flex-col gap-2 items-start m-2 p-4 h-full " >
@@ -38,9 +63,13 @@ const TasksPage = () => {
                     
             </article>
                 
-                {
-                    Tasks.map((task, index) => (
-                        <Task key={index} id={task.id}  title={ task.title } description={task.description} priority={ task.priority } deadline={ task.deadline } board={task.board}/>
+                { Tasks.length === 0?
+
+                <span className=' text-neutral-700'>Нет задач</span>
+
+                :
+                    Tasks.map((task: Task, index : number) => (
+                        <Task key={index} id={task.id}  title={ task.title } description={task.description} priority={ task.priority } deadline={ task.deadline } on_board={task.on_board}/>
                     ))   
                 }
             </div>

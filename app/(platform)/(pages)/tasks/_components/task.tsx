@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 
 
 
-const Task = ({ id, title, priority, deadline, description, board } : {id: number; title: string; priority: string; deadline: string; description: string;  board: any; }) => {
+const Task = ({ id, title, priority, deadline, description, on_board } : {id: number; title: string; priority: string; deadline: string; description: string;  on_board: any; }) => {
   
   return (
     <article className="flex w-full h-fit p-1" >
@@ -27,7 +27,7 @@ const Task = ({ id, title, priority, deadline, description, board } : {id: numbe
        
        <div className="w-1/5  text-clip">{description}</div>
         <Button className="w-1/5 justify-start " asChild  variant="link">
-                <Link href={`/project/${id}/board`}>На доске</Link>
+                <Link href={`/project/${on_board}/board`}>На доске</Link>
         </Button>
     </article>
   );

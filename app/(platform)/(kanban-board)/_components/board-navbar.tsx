@@ -8,8 +8,9 @@ import { useRouter, usePathname } from "next/navigation";
 import { ChevronLeft } from "lucide-react";
 
 interface BoardNavbarProps {
-    id : any;
+    id : number;
 }
+
 export const BoardNavbar = ( {id} : BoardNavbarProps ) => {
     const router = useRouter();
     const pathname = usePathname();

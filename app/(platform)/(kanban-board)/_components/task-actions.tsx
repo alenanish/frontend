@@ -61,47 +61,52 @@ const team = [
 
     
 
+
     const handleChange = (e: { target: { name: any; value: any; }; }) => {
-        const { name, value } = e.target;
-        setFormData(prevState => ({
-        ...prevState,
-        [name]: value,
-        priority: selectedPriority,
-        assignee: selectedMember,
-        }));
-       
+      const { name, value } = e.target;
+      setFormData(prevState => ({
+      ...prevState,
+      [name]: value,
+      priority: selectedPriority,
+      assignee: selectedMember,
+      }));
+     
+  };
+
+  const dialogClose = () => {
+      document.getElementById('closeDialog')?.click();
     };
 
-    const dialogClose = () => {
-        document.getElementById('closeDialog')?.click();
-      };
-
-    const handleSubmit = (e: { preventDefault: () => void; }) => {
-        e.preventDefault();
-        console.log({
-        ...formData,
-        
-        });
-       alert("save" + JSON.stringify(formData));
-      if (formData.id) {
-        axios
-          .patch(`http://localhost:8000/api/tasks/${formData.id}/`, formData)
-          .then((response) => {
-            setPost(response.data);
-          });
-          
-        dialogClose(); 
-        return;
-      }
-
+  const handleSubmit = (e: { preventDefault: () => void; }) => {
+      e.preventDefault();
+      console.log({
+      ...formData,
+      
+      });
+    if (formData.id) {
+      // if old post to edit and submit
       axios
-        .post("http://localhost:8000/api/tasks/", formData).then((response) => {
-            setPost(response.data);
-            });
+        .patch(`http://localhost:8000/api/project/tasks/${formData.id}/`, formData)
+        .then((response) => {
+          setPost(response.data);
+        });
         
-        dialogClose(); 
-    };
+      dialogClose(); 
+      return;
+    }
 
+    axios
+      .post("http://localhost:8000/api/boards/", formData, {
+          headers: {
+            'Authorization': 'Bearer realm=' + localStorage.getItem('auth'), 
+          }
+        })
+      .then((response) => {
+          setPost(response.data);
+          });
+      
+      dialogClose(); 
+  };
 
     const customSelectStyles = {
       container: (baseStyles: any) => ({

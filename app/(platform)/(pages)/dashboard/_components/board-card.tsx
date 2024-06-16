@@ -18,19 +18,33 @@ const BoardCard = ({ id, title, progress, description } : {id: number; title: st
     setIsOpen(!isOpen);
   };
 
-  const handleDeleteCard = () => {
-    // Handle deleting the card here
-    console.log("Deleting card with ID", id);
-    axios
-      .delete(`http://localhost:8000/api/boards/${id}/`)
-      ;
+  const handleDelete = async () => {
+    try {
+      await axios.delete("http://127.0.0.1:8000/api/boards/${id}/", {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('auth'),
+        }
+      });
+          } catch (error) {
+      console.error('Ошибка при удалении проекта:', error);
+    }
   };
+
 
   const handleCardClick = () => {
     // Переход на канбан доску проекта с использованием ID карточки
-    router.push(`/project/${id}/board/`);    
-  };
+    //router.push(/project/${id}/board/);
+    console.log(id, title, progress)
+    const response =  axios.get(`http://127.0.0.1:8000/api/project/${id}/board/`, { // Используйте шаблонные строки для подстановки id
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('auth'),
+          }
+        })
 
+        console.log(response)
+
+
+  };
 
   return (
     <article className="bg-white  border-2 border-primary flex flex-col items-stretch p-3 gap-2
@@ -48,7 +62,7 @@ const BoardCard = ({ id, title, progress, description } : {id: number; title: st
             </Button>
             {isOpen && (
                 <div className="flex gap-1 ">
-                    <Button size="icon" type="button" variant="secondary" className="hover:bg-destructive/10 " onClick={handleDeleteCard}>
+                    <Button size="icon" type="button" variant="secondary" className="hover:bg-destructive/10 " onClick={handleDelete}>
                         <Trash2 size={20} className=" group-hover:stroke-destructive" />
                     </Button>
                     <BoardAction board_id={id} board_title={title} board_description={description}  board_progress={progress}/>

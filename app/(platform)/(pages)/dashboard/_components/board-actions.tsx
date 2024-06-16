@@ -20,13 +20,14 @@ import "@/app/style.css";
 import axios from "axios";
 
 
-export function BoardAction({ board_id, board_title, board_progress, board_description } : {board_id: number | null; board_title: string; board_progress: number, board_description: string;}) {
+export function BoardAction({ board_id, board_title, board_progress, board_description } : { board_id: number | null; board_title: string; board_progress: number, board_description: string;}) {
     const [post, setPost] = React.useState(null);
 
     const [formData, setFormData] = useState({
         id: board_id,
         title: board_title,
         description: board_description,
+        progress: board_progress,
 
     });
 
@@ -49,7 +50,6 @@ export function BoardAction({ board_id, board_title, board_progress, board_descr
         ...formData,
         
         });
-       alert("save" + JSON.stringify(formData));
       if (formData.id) {
         // if old post to edit and submit
         axios
@@ -65,7 +65,7 @@ export function BoardAction({ board_id, board_title, board_progress, board_descr
       axios
         .post("http://localhost:8000/api/boards/", formData, {
             headers: {
-              'Authorization': 'Bearer realm=' + localStorage.getItem('auth'), 
+              'Authorization': 'Bearer ' + localStorage.getItem('auth'), 
             }
           })
         .then((response) => {

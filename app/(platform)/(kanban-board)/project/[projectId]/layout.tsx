@@ -10,7 +10,7 @@ const ProjectLayout = ({
    
 }: {
     children: React.ReactNode;
-    params: {projectId : any};
+    params: {projectId : number};
 })  => { 
 
 
@@ -25,7 +25,7 @@ const ProjectLayout = ({
 
                     </Button>
                     <h1 className="block text-3xl font-medium text-neutral-800">
-                        Проект 1
+                        Проект {params.projectId}
                     </h1>
                     
                 </div>
@@ -35,7 +35,7 @@ const ProjectLayout = ({
        
         
                 <main className="flex w-full">
-                    {children}
+                    { children }
                 </main>            
         </div>
 
