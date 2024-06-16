@@ -27,7 +27,6 @@ export function BoardAction({ board_id, board_title, board_progress, board_descr
         id: board_id,
         title: board_title,
         description: board_description,
-        progress: board_progress,
 
     });
 
@@ -64,7 +63,12 @@ export function BoardAction({ board_id, board_title, board_progress, board_descr
       }
 
       axios
-        .post("http://localhost:8000/api/boards/", formData).then((response) => {
+        .post("http://localhost:8000/api/boards/", formData, {
+            headers: {
+              'Authorization': 'Bearer realm=' + localStorage.getItem('auth'), 
+            }
+          })
+        .then((response) => {
             setPost(response.data);
             });
         

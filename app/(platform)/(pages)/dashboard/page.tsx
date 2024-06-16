@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, Component} from 'react'; 
+import React, { useState, Component, useEffect} from 'react'; 
 import axios from 'axios';
 
 
@@ -20,24 +20,23 @@ const DashboardPage =  () => {
     const apiURL = "http://127.0.0.1:8000/api/boards/";
 
     const fetchData = async () => {
-        const response = await axios.get(apiURL)
+        try {
+          const response = await axios.get(apiURL, {
+            headers: {
+              'Authorization': 'Bearer ' + localStorage.getItem('auth'),
+            }
+          }) 
+          setProjects(response.data);
+          console.log(Projects)
+        } catch (error) {
+          console.error('Ошибка при получении данных:', error);
+        }
+      };
 
-        setProjects(response.data) 
-        alert(Projects)
-    }
-
-
-    const projects = [ 
-        {id: 1, title: "Проект 1", description: "Проект 1",  progress: 20 },
-        {id: 2, title: "Проект 2", description: "Проект 2", progress: 70},
-        {id: 3, title: "Проект 3", description: "Проект 3", progress: 100},
-        {id: 4, title: "Проекты 4", description: "Проект 4", progress: 0},
-        {id: 5, title: "Проекты ", description: "", progress: 0},
-        {id: 6, title: "Проекты Проекты Проекты Проекты Проекты", description: "", progress: 0},
-            
-    ]
-
-    
+    useEffect(() => {
+        fetchData(); 
+    }, []); 
+   
 
     
     return (

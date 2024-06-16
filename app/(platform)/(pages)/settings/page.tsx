@@ -13,8 +13,7 @@ const SettingsPage = (userId: number) => {
 
     const [userData, setUserData] = useState(
         {
-            "first_name": "knk",
-            "last_name": "nkn",
+            "username": "knk",
             "email": "wddasfjbldjasf@adsf.ee",
             "password": "jjbjoib"
         }
@@ -28,8 +27,8 @@ const SettingsPage = (userId: number) => {
     );
 
     const [formData, setFormData] = useState({
-        first_name: userData.first_name,
-        last_name: userData.last_name,
+        username: userData.username,
+       
         email: userData.email,
         password: userData.email,
 
@@ -78,13 +77,10 @@ const SettingsPage = (userId: number) => {
 
                 <div className="flex flex-row gap-4">
                     <div className="grid w-full  gap-1.5 mb-2">
-                        <Label htmlFor="first_name">Имя</Label>
-                        <Input name='first_name' disabled={dataDisabled} defaultValue={userData.first_name}  required type="text" id="first_name" placeholder="Введите имя" onChange={handleChange} />
+                        <Label htmlFor="username">Имя</Label>
+                        <Input name='username' disabled={dataDisabled} defaultValue={userData.username}  required type="text" id="username" placeholder="Введите имя пользователя" onChange={handleChange} />
                     </div>
-                    <div className="grid w-full max-w-sm gap-1.5 mb-2">
-                        <Label htmlFor="last_name">Фамилия</Label>
-                        <Input name="last_name" disabled={dataDisabled} defaultValue={userData.last_name} required type="text" id="last_name" placeholder="Введите фамилию" onChange={handleChange} />
-                    </div>
+                    
                 </div>
                 <div className="grid w-1/2 max-w-sm gap-1.5 mb-4">
                     <Label htmlFor="email" >Эл. почта</Label>
