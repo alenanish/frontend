@@ -26,6 +26,7 @@ const TasksPage = () => {
               'Authorization': 'Bearer ' + localStorage.getItem('auth'),
             }
           }) 
+          console.log(response.data)
           setTasks(response.data);
           console.log(Tasks)
         } catch (error) {

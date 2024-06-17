@@ -9,6 +9,7 @@ import "@/app/style.css";
 import { LayoutDashboard, LayoutList, Calendar, Settings, LogOut } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import axios from "axios";
+import { headers } from "next/headers";
 
 
 
@@ -17,6 +18,12 @@ export const Sidebar = ( {expanded} : {expanded: boolean} ) => {
     const pathname = usePathname();
 
     const handleLogOut = () => {
+        axios.post('http://localhost:8000/api/settings/logout/', localStorage.getItem('auth'), {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('auth'),
+              }
+        })
+
         localStorage.removeItem('auth');
         localStorage.removeItem('refresh');
         router.push('/sign-in')

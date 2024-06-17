@@ -1,0 +1,101 @@
+/* Calendar.css */
+
+.calendar-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 800px;
+    margin: 20px auto;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    font-family: sans-serif;
+  }
+  
+  .calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .calendar-header button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px 10px;
+  }
+  
+  .calendar-weekdays {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+  }
+  
+  .calendar-weekdays div {
+    text-align: center;
+    width: calc(100% / 7);
+    padding: 5px 0;
+    font-weight: bold;
+  }
+  
+  .calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 2px;
+  }
+  
+  .calendar-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    text-align: center;
+    padding: 5px;
+    cursor: pointer;
+  }
+  
+  .calendar-day {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .calendar-empty {
+    height: 100%;
+  }
+  
+  .inactive {
+    opacity: 0.5;
+    cursor: default;
+  }
+  
+  .calendar-event {
+    display: block;
+    margin-top: 5px;
+    padding: 3px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+    width: 90%;
+    text-align: left;
+  }
+  
+  /* Example event colors */
+  .blue {
+    background-color: lightblue;
+    color: white;
+  }
+  
+  .red {
+    background-color: lightcoral;
+    color: white;
+  }
+  
+  .green {
+    background-color: lightgreen;
+    color: white;
+  }
+  
