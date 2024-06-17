@@ -18,6 +18,7 @@ import React, { useEffect, useState } from 'react';
 
 import "@/app/style.css";
 import axios from "axios";
+import Task from "../../(pages)/tasks/_components/task";
 
 interface Team {
   id: number,
@@ -32,39 +33,7 @@ export function TaskAction({boardId, trigger, task_id, task_title, task_priority
     : {boardId: number; trigger: any; task_id: number | null; task_title: string; task_priority: string; task_description: string; task_created_at: string; task_deadline: string | null; task_on_board: number; task_assignee: string | null; task_status: string; }) {
     const [post, setPost] = React.useState(null);
 
-      
-interface Team {
-  id: number,
-  first_name : string,
-  last_name: string,
-  username : string,
-  permission: string,
-};
 
-const [Team, setTeam] = useState([]);
-
-
-    const fetchTeam = async () => {
-      try {
-        const response = await axios.get(`http://localhost:8000/api/project/${boardId}/team/`, {
-          headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('auth'),
-          }
-        })
-
-        setTeam(response.data);
-        console.log('Team: ', Team)
-      } catch (error) {
-        console.error('Ошибка при получении данных:', error);
-      }
-    };
-
-    useEffect(() => {
-        fetchTeam();
-        
-    }, [],
-    );
-    
     const [selectedPriority, setSelectedPriority] = useState("");
     const [selectedMember, setSelectedMember] = useState("");
 
@@ -89,7 +58,6 @@ const [Team, setTeam] = useState([]);
 
     });
 
-    
 
     const handleChange = (e: { target: { name: any; value: any; }; }) => {
         const { name, value } = e.target;
@@ -140,6 +108,75 @@ const [Team, setTeam] = useState([]);
         
         dialogClose(); 
     };
+
+
+    interface Team {
+      id: {
+        board: number;
+        can_edit: boolean;
+        id: number;
+      }
+        participant: {
+          email: string;
+          id: number;
+          username: string;
+        };
+      }
+      
+      const findLabelByValue = (Team: any, value: any) => {
+        const team = Team.find((team: { participant: { id: any; }; }) => team.participant.id === value);
+        return team ? team.participant.username : null;
+      };
+
+      const getPriority = (priority: string) => {
+        if (priority === 'high'){
+          return 'Высокий';
+        }  
+        if (priority === 'medium'){
+          return 'Средний';
+        }  
+        return 'Низкий';
+      };
+      
+      const [Team, setTeam] = useState();
+      const [teamOptions, setTeamOptions] = useState();
+      
+          const fetchTeam = async () => {
+            try {
+              const response = await axios.get(`http://localhost:8000/api/project/${boardId}/team/`, {
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('auth'),
+                }
+              })
+
+              
+              var teams = response.data
+
+            } catch (error) {
+              console.error('Ошибка при получении данных:', error);
+            }
+
+            setTeam(
+
+              teams.map((team: { participant: { id: any; username: any; email: any; }; id: { can_edit: any; board: any; }; }) => ({
+                value:  team.participant.id,
+                label: team.participant.username,}))
+            )
+            setTeamOptions(
+            teams.map((team: { participant: { id: any; username: any; email: any; }; id: { can_edit: any; board: any; }; }) => ({
+              value: team.participant.id,
+              label: team.participant.id,
+              
+            })))     
+          };
+      
+          useEffect(() => {
+              fetchTeam();
+              
+          }, [],
+          );
+      
+          
 
     const customSelectStyles = {
       container: (baseStyles: any) => ({
@@ -281,7 +318,7 @@ const [Team, setTeam] = useState([]);
                       <Select name="priority"
                         placeholder="Приоритет"
                         required
-                        defaultValue={task_priority ?  { label: task_priority, value: task_priority } : '' }
+                        defaultValue={task_priority ?  { label: getPriority(task_priority), value: getPriority(task_priority) } : '' }
                         options={
                             [
                                 { label: 'Высокий', value: 'Высокий' },
@@ -298,10 +335,9 @@ const [Team, setTeam] = useState([]);
                 <div className="w-1/2 items-center gap-1.5">
                   <Label htmlFor="assignee">Назначить</Label>
                     <Select name="assignee"
-                      placeholder="Введите почту"
-
-                      defaultInputValue={ !task_assignee ? '' : task_assignee}
-                      options={Team}
+                      placeholder="Имя пользователя"
+                      defaultValue={ !task_assignee ? '' :  { label:  findLabelByValue(Team, task_assignee), value: findLabelByValue(Team, task_assignee)} }
+                      options={teamOptions}
                                     
                       onChange={handleSelectedMember}
                       styles={customSelectStyles }

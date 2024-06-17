@@ -3,68 +3,46 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const SettingsPage = (userId: number) => {
     const [dataDisabled, setDataDisabled] = useState(true);
-    const [res, setPost] = useState('');
+    const [user, setUser] = useState('');
+    const [poat, setPost] = useState('');
+
 
     
 
-    const [userData, setUserData] = useState(
-        {
-            "username": "knk",
-            "email": "wddasfjbldjasf@adsf.ee",
-            "password": "jjbjoib"
-        }
-        /*
-        axios
-        .get("http://localhost:8000/api/users/").
-        then((response) => {
-            setPost(response.data);
-            })
-            */
-    );
+    const apiURL = `http://localhost:8000/api/settings/` + localStorage.getItem('auth');
+    
+        const fetchData = async () => {
+            try {
+              const response = await axios.get(apiURL, {
+                headers: {
+                  'Authorization': 'Bearer ' + localStorage.getItem('auth'),
+                }
+              })
+              console.log(userId)
+              setUser(response.data);
+              console.log(response.data)
+            } catch (error) {
+              console.error('Ошибка при получении данных:', error);
+            }
+          };
+    
+        useEffect(() => {
+            fetchData();
+        }, []);
+    
+    
 
-    const [formData, setFormData] = useState({
-        username: userData.username,
-       
-        email: userData.email,
-        password: userData.email,
-
-    });
-
-    const handleChange = (e: { target: { name: any; value: any; }; }) => {
-        const { name, value } = e.target;
-        setFormData(prevState => ({
-        ...prevState,
-        [name]: value,
-        }));
-       
-    };
-
-
-    const handleSubmit = (e: { preventDefault: () => void; }) => {
-        e.preventDefault();
-        console.log({
-        ...formData,
-        });
-       alert("save" + JSON.stringify(formData));
-      axios
-        .patch("http://localhost:8000/api/users/", formData).
-        then((response) => {
-            setPost(response.data);
-            });
-        
-        
-    };
 
     return (
    
     
     <div className=" flex flex-col gap-2 items-start m-2 p-4 h-full w-2/3 " >
 
-        <div className="flex w-full flex-row items-center py-2 gap-4 h-max justify-between  ">
+        {/*<div className="flex w-full flex-row items-center py-2 gap-4 h-max justify-between  ">
             <h1 className="block text-3xl font-medium text-neutral-800">
                 Настройки 
             </h1>
@@ -78,7 +56,7 @@ const SettingsPage = (userId: number) => {
                 <div className="flex flex-row gap-4">
                     <div className="grid w-full  gap-1.5 mb-2">
                         <Label htmlFor="username">Имя</Label>
-                        <Input name='username' disabled={dataDisabled} defaultValue={userData.username}  required type="text" id="username" placeholder="Введите имя пользователя" onChange={handleChange} />
+                        <Input name='username' disabled={dataDisabled} defaultValue={user.username}  required type="text" id="username" placeholder="Введите имя пользователя" onChange={handleChange} />
                     </div>
                     
                 </div>
@@ -120,8 +98,9 @@ const SettingsPage = (userId: number) => {
             <div>
 
             </div>
-
-        </div>
+            </div>
+        */}
+        
 
     </div>
     );

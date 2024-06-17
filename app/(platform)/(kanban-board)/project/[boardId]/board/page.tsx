@@ -30,7 +30,6 @@ const [Tasks, setTasks] = useState([]);
 
   const fetchData = async () => {
       try {
-        console.log(params.boardId)
         const response = await axios.get(`http://localhost:8000/api/project/${params.boardId}/board/`, {
           headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('auth'),
@@ -38,7 +37,7 @@ const [Tasks, setTasks] = useState([]);
         })
 
         setTasks(response.data);
-        console.log('Tasks: ', Tasks)
+        console.log('Tasks: ', response.data)
       } catch (error) {
         console.error('Ошибка при получении данных:', error);
       }

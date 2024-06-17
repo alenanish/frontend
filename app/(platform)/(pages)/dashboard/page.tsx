@@ -38,12 +38,9 @@ const DashboardPage =  () => {
     }, []);
 
 
-
-
-
     return (
 
-        <div className=" flex flex-col gap-2 items-start m-2 p-4 " >
+        <div className=" flex flex-col gap-2 items-start m-2 p-4 w-full " >
 
             <div className="flex w-full flex-row items-center py-2 gap-4 h-max justify-between ">
                 <h1 className="block text-3xl font-medium text-neutral-800">

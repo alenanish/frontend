@@ -1,10 +1,7 @@
 "use client";
 import React, { useState } from "react";
-
-
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-
 
 
 const Task = ({ id, title, priority, deadline, description, on_board } : {id: number; title: string; priority: string; deadline: string; description: string;  on_board: any; }) => {

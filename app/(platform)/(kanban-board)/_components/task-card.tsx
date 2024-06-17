@@ -29,6 +29,7 @@ const TaskCard = ({id, index,  title,  description,  created_at,  deadline,  pri
       console.error('Ошибка при удалении проекта:', error);
     }
   };
+  
   return (
     <Draggable  draggableId={ id.toString()} index={index}>
       {(provided) => (

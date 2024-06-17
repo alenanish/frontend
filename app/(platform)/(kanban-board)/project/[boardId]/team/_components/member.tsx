@@ -2,29 +2,43 @@
 import React, { useState } from "react";
 
 
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { EllipsisVertical } from "lucide-react";
-import MemberAction from "./member-actions";
+import { Trash2 } from "lucide-react";
+import Switch from "react-switch";
+import axios from "axios";
 
 
-
-const Member = ({ id, username, email, first_name, last_name, can_edit, board_id } 
-    : {id: number; username: string; first_name: string; last_name: string; email: string; can_edit: string; board_id: number; }) => {
+const Member = ({ id, username, email, can_edit, board_id } 
+    : {id: number; username: string; email: string; can_edit: boolean; board_id: number; }) => {
   
-  return (
-    <article className="flex w-full h-fit p-1" >
+    const [checked, setChecked] = useState(!can_edit);
 
-       <div className="w-1/5  font-medium">{username}</div>
-       <div className="w-1/5 ">{ email }</div>
-       <div className="w-1/5 ">
-            {first_name}
-       </div>
-       
-       <div className="w-1/5  text-clip">{last_name}</div>
+    const handleDelete = async () => {
+        try {
+          await axios.delete(`http://localhost:8000/api/project/${board_id}/team/${id}/`, {
+            headers: {
+              'Authorization': 'Bearer ' + localStorage.getItem('auth'),
+            }
+          });
+              } catch (error) {
+          console.error('Ошибка при удалении проекта:', error);
+        }
+      };
 
-        <MemberAction member_id={id} member_can_edit={can_edit} member_board_id={board_id}  />
-    </article>
+    return (
+        <article className="flex w-full h-fit p-1 " >
+            <div className="w-1/4 flex self-center justify-center font-medium">{username}</div>
+            <div className="w-1/4 flex self-center justify-center ">{ email }</div>
+            <div className="w-1/4 flex self-center justify-center ">
+                <Switch onColor="#A46DDA" borderRadius={6} onChange={setChecked} checked={checked} />
+            </div>
+            <div className="w-1/4 flex self-center justify-center ">
+                <Button variant="ghost" size="icon" className=" hover:stroke-destructive hover:border-destructive"
+                onClick={handleDelete}>
+                    <Trash2 />    
+                </Button> 
+            </div>
+        </article>
   );
 };
 
