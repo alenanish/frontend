@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface User {
@@ -17,7 +18,7 @@ const SettingsPage = () => {
     const [dataDisabled, setDataDisabled] = useState(true);
     const [user, setUser] = useState<User | null>(null); 
     const [post, setPost] = useState('');
-  
+    const router = useRouter();
     const [formData, setFormData] = useState({
       id: '',
       username: '',
@@ -62,6 +63,20 @@ const SettingsPage = () => {
         [name]: value,
       }));
     };
+
+    const hadleCancel = () => {
+        setFormData({
+          id: user?.id || "",
+          username: user?.username || "",
+          email: user?.email || "",
+          first_name: user?.first_name || "",
+          last_name: user?.last_name || "",
+        })
+
+        setDataDisabled(!dataDisabled);
+        router.refresh();
+
+      };
   
     const handleSubmit = (e: { preventDefault: () => void; }) => {
       e.preventDefault();
@@ -78,6 +93,7 @@ const SettingsPage = () => {
           .then((response) => {
             setPost(response.data);
             setUser(response.data);
+            router.refresh();
             setDataDisabled(!dataDisabled);
           });
       }
@@ -98,7 +114,7 @@ const SettingsPage = () => {
                 <div className="flex flex-row gap-2">
                     <div className="grid w-full  gap-1.5 mb-2">
                         <Label htmlFor="first_name">Имя</Label>
-                        <Input name='first_name' disabled={dataDisabled} defaultValue={formData.first_name}  required type="text" id="first_name" placeholder="Введите имя" onChange={handleChange} />
+                        <Input name='first_name' disabled={dataDisabled} value={formData.first_name}  required type="text" id="first_name" placeholder="Введите имя" onChange={handleChange} />
                     </div>
                     <div className="grid w-full  gap-1.5 mb-2">
                         <Label htmlFor="last_name">Фамилия</Label>
@@ -121,7 +137,7 @@ const SettingsPage = () => {
                         </Button>
                         ) : (
                             <div className="flex flex-row gap-2">
-                            <Button type="reset" size="lg" variant="outline" className="max-w-sm mb-4 w-full" onClick={() => setDataDisabled(!dataDisabled)} >
+                            <Button type="reset" size="lg" variant="outline" className="max-w-sm mb-4 w-full" onClick={hadleCancel} >
                                 Отменить
                             </Button>
                             <Button type="submit" size="lg" className="max-w-sm mb-4 w-full"  >
