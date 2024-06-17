@@ -4,12 +4,9 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 800px;
-    margin: 20px auto;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    font-family: sans-serif;
+    height: 100%;
+
+    border-radius: 5px;    
   }
   
   .calendar-header {
@@ -31,6 +28,7 @@
     display: flex;
     justify-content: space-around;
     margin-bottom: 10px;
+    
   }
   
   .calendar-weekdays div {
@@ -44,6 +42,9 @@
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 2px;
+    
+    
+    
   }
   
   .calendar-cell {
@@ -53,15 +54,17 @@
     justify-content: center;
     height: 50px;
     border: 1px solid #ccc;
+    
     border-radius: 3px;
     text-align: center;
     padding: 5px;
-    cursor: pointer;
+    cursor: default;
   }
   
   .calendar-day {
     font-size: 18px;
     font-weight: bold;
+    position: absolute;
   }
   
   .calendar-empty {
@@ -78,24 +81,30 @@
     margin-top: 5px;
     padding: 3px 5px;
     border-radius: 3px;
+    
     font-size: 12px;
-    width: 90%;
+    width: 100%;
     text-align: left;
+    cursor: pointer;
+  }
+
+  .calendar-event:hover {
+    opacity: 0.8;
+  }
+
+  .low {
+    background-color:rgb(220 252 231 / var(--tw-bg-opacity));
+    --tw-text-opacity: 1;
+    color: rgb(22 163 74 / var(--tw-text-opacity));
   }
   
-  /* Example event colors */
-  .blue {
-    background-color: lightblue;
-    color: white;
+  .high {
+    background-color: hsl(var(--accent) / 0.1);
+    color: hsl(var(--accent));
   }
   
-  .red {
-    background-color: lightcoral;
-    color: white;
-  }
-  
-  .green {
-    background-color: lightgreen;
-    color: white;
-  }
+  .medium {
+    background-color: #F8D7B5;
+    color: #A16500;
+    }
   

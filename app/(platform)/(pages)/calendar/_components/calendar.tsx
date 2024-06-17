@@ -1,16 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import './calendar.css';
+import axios from 'axios';
+import { Button } from '@/components/ui/button';
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 
 interface Event {
-  date: string; 
+  id: number; 
+  deadline: string; 
   title: string;
-  color: string;
+  priority: string;
+  on_board: number,
+
 }
 
 const Calendar: React.FC = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState<Event[]>([]);
+
+const apiURL = "http://localhost:8000/api/calendar/";
+
+const fetchData = async () => {
+    try {
+      const response = await axios.get(apiURL, {
+        headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('auth'),
+            }
+        }) 
+        console.log(response.data)
+        setEvents(response.data);
+        
+        } catch (error) {
+        console.error('Ошибка при получении данных:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData(); 
+    }, [], 
+    ); 
+
+
 
   const getDaysInMonth = (month: number, year: number): number => {
     return new Date(year, month + 1, 0).getDate();
@@ -21,7 +52,7 @@ const Calendar: React.FC = () => {
     const month = currentDate.getMonth();
     const year = currentDate.getFullYear();
     const daysInMonth = getDaysInMonth(month, year);
-    const firstDay = new Date(year, month, 1).getDay(); // 0 (Sunday) - 6 (Saturday)
+    const firstDay = new Date(year, month, 0).getDay(); // 0 (Sunday) - 6 (Saturday)
 
     const calendar: { day: number | null; isCurrentMonth: boolean }[] = [];
 
@@ -72,58 +103,56 @@ const Calendar: React.FC = () => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
   };
 
-
+  // Function to get events for a specific day
   const getEventsForDay = (day: number): Event[] => {
     return events.filter((event) => {
-      const eventDate = new Date(event.date);
+      const eventDate = new Date(event.deadline);
       return eventDate.getDate() === day &&
         eventDate.getMonth() === currentDate.getMonth() &&
         eventDate.getFullYear() === currentDate.getFullYear();
     });
   };
 
-  // Sample event data
-  useEffect(() => {
-    setEvents([
-      { date: '2024-03-15', title: 'Meeting with Client A', color: 'blue' },
-      { date: '2024-03-22', title: 'Project Deadline', color: 'red' },
-      { date: '2024-03-29', title: 'Team Lunch', color: 'green' },
-    ]);
-  }, []);
+
+  const router = useRouter();
+
 
   return (
     <div className="calendar-container">
       <div className="calendar-header">
-        <button onClick={prevMonth}>Previous</button>
+        <Button onClick={prevMonth} size="icon" variant="ghost"><ChevronLeftIcon/> </Button>
         <h2>{currentDate.toLocaleString('default', { month: 'long', year: 'numeric' })}</h2>
-        <button onClick={nextMonth}>Next</button>
+        <Button onClick={nextMonth} size="icon" variant="ghost"><ChevronRightIcon/> </Button>
+
       </div>
 
       <div className="calendar-weekdays">
-        <div>Sun</div>
-        <div>Mon</div>
-        <div>Tue</div>
-        <div>Wed</div>
-        <div>Thu</div>
-        <div>Fri</div>
-        <div>Sat</div>
+        
+        <div>Пн</div>
+        <div>Вт</div>
+        <div>Ср</div>
+        <div>Чт</div>
+        <div>Пт</div>
+        <div>Сб</div>
+        <div>Вс</div>
       </div>
 
       <div className="calendar-grid">
         {generateCalendar().map((day, index) => (
           <div key={index} className={`calendar-cell ${day.isCurrentMonth ? '' : 'inactive'}`}>
-            {day.day ? (
-              <>
-                <span className="calendar-day">{day.day}</span>
-                {getEventsForDay(day.day).map((event, eventIndex) => (
-                  <div key={eventIndex} className={`calendar-event ${event.color}`}>
-                  {event.title}
-                </div>
-              ))}
-            </>
-          ) : (
-            <span className="calendar-empty"></span>
-          )}
+              {day.day ? (
+                <>
+                  <span className="calendar-day">{day.day}</span>
+                  { getEventsForDay(day.day).map((event, eventIndex) => (
+                    <div key={eventIndex} onClick={() => router.push(`project/${event.on_board}/board`)} className={`calendar-event ${event.priority}`}>
+                    {event.title}
+                  </div>
+                ))}
+              </>
+            ) : ( 
+            <span className="calendar-empty"></span> 
+            )
+          }
         </div>
       ))}
     </div>

@@ -68,7 +68,7 @@ const TaskCard = ({id, index,  title,  description,  created_at,  deadline,  pri
                             task_created_at={created_at} task_deadline={deadline} task_on_board={on_board} task_assignee={assignee} task_status={status}
                             trigger={
                                 <Button size="icon" type="button" variant="secondary"  className="hover:bg-[#D5DDEE] ">
-                                < PenLine size={20} className=" group-hover:stroke-[#6D88B0]"/>
+                                < PenLine size={20} className="  group-hover:stroke-[#6D88B0]"/>
                                 </Button>
                             }     
                         />

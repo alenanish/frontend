@@ -50,7 +50,7 @@ const TasksPage = () => {
                
             </div>
             
-            <div className="bg-white flex flex-wrap gap-4 border-2 border-primary items-stretch p-3
+            <div className="bg-white w-full gap-4 border-2 border-primary items-stretch p-3
                          shadow-[0px_4px_8px_rgba(0,0,0,0.5)] rounded-md h-full">
             <article className="flex w-full h-fit p-1 border-b border-neutral-500" >
   

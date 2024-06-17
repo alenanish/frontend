@@ -15,7 +15,7 @@ interface User {
 
 const SettingsPage = () => {
     const [dataDisabled, setDataDisabled] = useState(true);
-    const [user, setUser] = useState<User | null>(null); // Инициализируем user как null
+    const [user, setUser] = useState<User | null>(null); 
     const [post, setPost] = useState('');
   
     const [formData, setFormData] = useState({
@@ -36,7 +36,7 @@ const SettingsPage = () => {
           },
         });
   
-        setUser(response.data); // Обновляем user с полученными данными
+        setUser(response.data); 
         setFormData({
           id: response.data.id, 
           username: response.data.username, 
@@ -69,7 +69,6 @@ const SettingsPage = () => {
         ...formData,
       });
       if (formData.id) {
-        console.log(formData.id);
         axios
           .patch(apiURL, formData, {
             headers: {
@@ -78,7 +77,7 @@ const SettingsPage = () => {
           })
           .then((response) => {
             setPost(response.data);
-            setUser(response.data); // Обновляем user после успешного обновления
+            setUser(response.data);
             setDataDisabled(!dataDisabled);
           });
       }
@@ -96,19 +95,19 @@ const SettingsPage = () => {
             <div className="w-full">
             <h1 className="block text-xl font-medium text-neutral-800 border-b border-neutral-700 mb-3 p-2">Персональная информация</h1>
             <form className="w-full flex-col flex" onSubmit={handleSubmit}>
-                <div className="flex flex-row gap-4">
+                <div className="flex flex-row gap-2">
                     <div className="grid w-full  gap-1.5 mb-2">
                         <Label htmlFor="first_name">Имя</Label>
-                        <Input name='first_name' disabled={dataDisabled} defaultValue={formData.first_name}  required type="text" id="first_name" placeholder="Введите имя пользователя" onChange={handleChange} />
+                        <Input name='first_name' disabled={dataDisabled} defaultValue={formData.first_name}  required type="text" id="first_name" placeholder="Введите имя" onChange={handleChange} />
                     </div>
                     <div className="grid w-full  gap-1.5 mb-2">
                         <Label htmlFor="last_name">Фамилия</Label>
-                        <Input name='last_name' disabled={dataDisabled} value={formData.last_name}  required type="text" id="last_name" placeholder="Введите имя пользователя" onChange={handleChange} />
+                        <Input name='last_name' disabled={dataDisabled} value={formData.last_name}  required type="text" id="last_name" placeholder="Введите фамилию" onChange={handleChange} />
                     </div>
                 </div>
                 <div className="grid w-1/2 max-w-sm gap-1.5 mb-4">
-                    <Label htmlFor="username" >Эл. почта</Label>
-                    <Input name="username" disabled={dataDisabled}  value={formData.username} required type="text" id="username" placeholder="Введите адрес эл. почты" onChange={handleChange} />
+                    <Label htmlFor="username" >Имя пользователя</Label>
+                    <Input name="username" disabled={dataDisabled}  value={formData.username} required type="text" id="username" placeholder="Введите имя пользователя" onChange={handleChange} />
                 </div>
                 <div className="grid w-1/2 max-w-sm gap-1.5 mb-4">
                     <Label htmlFor="email" >Эл. почта</Label>
@@ -117,7 +116,7 @@ const SettingsPage = () => {
                 
                 {
                         dataDisabled ? (
-                        <Button variant="outline" size="lg" type="button"  className="max-w-sm mb-4 w-full"  onClick={() => setDataDisabled(!dataDisabled)}> 
+                        <Button variant="outline" size="lg" type="button"  className="mb-4 w-1/2"  onClick={() => setDataDisabled(!dataDisabled)}> 
                             Внести изменения    
                         </Button>
                         ) : (
@@ -128,13 +127,10 @@ const SettingsPage = () => {
                             <Button type="submit" size="lg" className="max-w-sm mb-4 w-full"  >
                                 Сохранить 
                             </Button>
-
-
                             </div>
-                            
+
                         )
                     }
-                  
             </form>
             </div>
         <div>
