@@ -10,7 +10,8 @@ import axios from "axios";
 
 
 
-const BoardCard = ({ id, title, progress, description } : {id: number; title: string; progress: number; description: string;}) => {
+const BoardCard = ({ id, title, progress, description, handleDelete, refreshPage } 
+    : {id: number; title: string; progress: number; description: string; handleDelete: any; refreshPage: any;}) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
@@ -18,18 +19,10 @@ const BoardCard = ({ id, title, progress, description } : {id: number; title: st
     setIsOpen(!isOpen);
   };
 
-  const handleDelete = async () => {
-    try {
-      await axios.delete(`http://localhost:8000/api/boards/${id}/`, {
-        headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('auth'),
-        }
-      });
-          } catch (error) {
-      console.error('Ошибка при удалении проекта:', error);
-    }
-  };
-
+  function handleDeleteProject(id : number) {
+    handleDelete(id);
+    setIsOpen(!isOpen);
+  }
 
   const handleCardClick = () => {
     console.log(id);
@@ -53,10 +46,10 @@ const BoardCard = ({ id, title, progress, description } : {id: number; title: st
             </Button>
             {isOpen && (
                 <div className="flex gap-1 ">
-                    <Button size="icon" type="button" variant="secondary" className="hover:bg-destructive/10 " onClick={handleDelete}>
+                    <Button size="icon" type="button" variant="secondary" className="hover:bg-destructive/10 " onClick={() => handleDeleteProject(id)}>
                         <Trash2 size={20} className=" group-hover:stroke-destructive" />
                     </Button>
-                    <BoardAction board_id={id} board_title={title} board_description={description}  board_progress={progress}/>
+                    <BoardAction board_id={id} board_title={title} board_description={description}  board_progress={progress} refreshPage={refreshPage}/>
                 </div>
             )}
         

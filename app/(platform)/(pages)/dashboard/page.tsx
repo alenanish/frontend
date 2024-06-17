@@ -5,19 +5,22 @@ import axios from 'axios';
 
 import BoardCard from './_components/board-card';
 import BoardAction from './_components/board-actions';
+import { useRouter } from 'next/navigation';
+
+interface Project {
+  id: number,
+  title: string,
+  description: string,
+  progress: number,
+};
 
 
 const DashboardPage =  () => {
-    interface Project {
-        id: number,
-        title: string,
-        description: string,
-        progress: number,
-    };
-
-    const [Projects, setProjects] = useState([]);
-
+    const [newProjectName, setNewProjectName] = useState<Project>(); 
+    const [post, setPost] = useState('')
+    const [Projects, setProjects] = useState<Project[]>([]);
     const apiURL = "http://localhost:8000/api/boards/";
+    const router = useRouter();
 
     const fetchData = async () => {
         try {
@@ -37,7 +40,21 @@ const DashboardPage =  () => {
         fetchData();
     }, []);
 
-
+    const handleDelete = async (id : number) => {
+      try {
+        await axios.delete(`http://localhost:8000/api/boards/${id}/`, {
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('auth'),
+          }
+        });
+        
+        } catch (error) {
+        console.error('Ошибка при удалении проекта:', error);
+      }
+      setProjects(Projects.filter((project) => project.id !== id));
+      router.refresh();
+    };
+  
     return (
 
 <div className="flex flex-col gap-2 items-start m-2 p-4 h-full" >
@@ -46,7 +63,7 @@ const DashboardPage =  () => {
         <h1 className="block text-3xl font-medium text-neutral-800">
                     Проекты
                 </h1>
-                <BoardAction board_id={null} board_title={''} board_description={''} board_progress={0}  />
+                <BoardAction board_id={null} board_title={''} board_description={''} board_progress={0} refreshPage={fetchData}  />
             </div>
 
             <div className="flex flex-wrap gap-4">
@@ -54,7 +71,7 @@ const DashboardPage =  () => {
                 Projects.length === 0 ?
                     <span className=' text-neutral-700'>Пока нет поектов</span>:
                     Projects.map((project: Project, index: number) => (
-                        <BoardCard key={index} id={ project.id } title={ project.title } description={project.description} progress={ project.progress } />
+                        <BoardCard key={index} id={ project.id } title={ project.title } description={project.description} progress={ project.progress } handleDelete={handleDelete} refreshPage={fetchData}/>
                     ))
                 }
             </div>

@@ -20,7 +20,8 @@ import "@/app/style.css";
 import axios from "axios";
 
 
-export function BoardAction({ board_id, board_title, board_progress, board_description } : { board_id: number | null; board_title: string; board_progress: number, board_description: string;}) {
+export function BoardAction({ board_id, board_title, board_progress, board_description, refreshPage } 
+    : { board_id: number | null; board_title: string; board_progress: number, board_description: string; refreshPage: any}) {
     const [post, setPost] = React.useState(null);
 
     const [formData, setFormData] = useState({
@@ -60,8 +61,10 @@ export function BoardAction({ board_id, board_title, board_progress, board_descr
           })
         .then((response) => {
             setPost(response.data);
-            });
             dialogClose(); 
+            refreshPage();
+            });
+            
             return;
       }
 
@@ -73,9 +76,10 @@ export function BoardAction({ board_id, board_title, board_progress, board_descr
           })
         .then((response) => {
             setPost(response.data);
+            refreshPage();
+            dialogClose()
             });
-        
-        dialogClose(); 
+        ; 
     };
 
 
