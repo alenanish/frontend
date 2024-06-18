@@ -38,6 +38,7 @@ const SettingsPage = () => {
         });
   
         setUser(response.data); 
+        console.log(response.data);
         setFormData({
           id: response.data.id, 
           username: response.data.username, 
@@ -46,7 +47,7 @@ const SettingsPage = () => {
           last_name: response.data.last_name,
         });
   
-        console.log('form:', formData);
+        
       } catch (error) {
         console.error('Ошибка при получении данных:', error);
       }
@@ -80,9 +81,6 @@ const SettingsPage = () => {
   
     const handleSubmit = (e: { preventDefault: () => void; }) => {
       e.preventDefault();
-      console.log({
-        ...formData,
-      });
       if (formData.id) {
         axios
           .patch(apiURL, formData, {

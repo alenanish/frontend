@@ -39,8 +39,6 @@ const SignIn = () => {
     };
 
 
-
-
     const handleSubmit = async (e : any) => {
         e.preventDefault();
 
@@ -55,8 +53,6 @@ const SignIn = () => {
           router.push('/dashboard');
         } catch (error) {
           console.error('Login failed:', error);
-
-
         }
       };
 
