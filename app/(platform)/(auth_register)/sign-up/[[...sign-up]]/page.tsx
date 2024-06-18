@@ -25,8 +25,6 @@ const SignUp = () => {
 
     const [formData, setFormData] = useState({
         username: '',
-        first_name: '',
-        last_name: '',
         email: '',
         password: '',
 
@@ -65,16 +63,6 @@ const SignUp = () => {
             </h2>
             
             <form className="w-full flex-col flex place-items-center" onSubmit={handleSubmit}>
-            <div className="flex flex-row w-full max-w-sm gap-1.5 mb-2">
-            <div className="grid w-full max-w-sm gap-1.5 mb-2">
-                    <Label htmlFor="first_name">Имя</Label>
-                    <Input name='first_name' required type="text" id="first_name" placeholder="Введите имя" onChange={handleChange} />
-                </div>
-                <div className="grid w-full max-w-sm gap-1.5 mb-2">
-                    <Label htmlFor="last_name">Фамилия</Label>
-                    <Input name='last_name' required type="text" id="last_name" placeholder="Введите фамилию" onChange={handleChange} />
-                </div>
-            </ div>
 
                 <div className="grid w-full max-w-sm gap-1.5 mb-2">
                     <Label htmlFor="username">Имя пользователя</Label>

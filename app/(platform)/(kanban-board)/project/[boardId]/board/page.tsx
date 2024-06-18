@@ -2,11 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import {  Plus } from "lucide-react";
-import TaskAction from "../../../_components/task-actions";
+
 import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
-import { Column } from "../../../_components/column";
+
 import { useEffect, useState } from "react";
 import axios from "axios";
+import TaskAction from "./_components/task-actions";
+import { Column } from "./_components/column";
 
 
 
@@ -26,7 +28,7 @@ export default function BoardPage({ params }: { params: { boardId: number } }) {
 
 
 
-const [Tasks, setTasks] = useState([]);
+const [Tasks, setTasks] = useState<Task[]>([]);
 
   const fetchData = async () => {
       try {
@@ -49,11 +51,47 @@ const [Tasks, setTasks] = useState([]);
     );
 
   const Columns = [
-    {id: 0, name: 'Сделать', value: 'to-do'},
-    {id: 1, name: 'В процессе', value: 'in-progress'},
-    {id: 2, name: 'Сделано', value: 'completed'},
+    {id: 0, name: 'Сделать', status: 'to-do'},
+    {id: 1, name: 'В процессе', status: 'in-progress'},
+    {id: 2, name: 'Сделано', status: 'completed'},
   ]
 
+
+  const handleOnDragEnd = async (result: any) => {
+    if (!result.destination) return;
+
+    const sourceColumn = result.source.droppableId;
+    const destinationColumn = result.destination.droppableId;
+
+    if (sourceColumn === destinationColumn) return; // Карточка перетаскивалась внутри того же столбца
+
+    const updatedCards = [...Tasks];
+    const cardIndex = updatedCards.findIndex(
+      (task) => task.id === result.draggableId
+    );
+    const [reorderedCard] = updatedCards.splice(cardIndex, 1);
+    console.log('destCol', destinationColumn)
+
+    reorderedCard.status = destinationColumn; // Обновляем столбец карточки
+
+    updatedCards.splice(result.destination.index, 0, reorderedCard);
+
+    setTasks(updatedCards);
+
+    console.log(reorderedCard)
+
+    axios          
+    .patch(`http://localhost:8000/api/project/${params.boardId}/board/${reorderedCard.id}/`, reorderedCard, {
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('auth'), 
+        }
+      })
+    .then((response) => {
+
+        });
+    
+    return;
+  };
 
   return (
   <div className="w-full">
@@ -70,10 +108,12 @@ const [Tasks, setTasks] = useState([]);
       />
     </div>
     <main className=" mx-6 flex flex-row gap-6">
+    <DragDropContext onDragEnd={handleOnDragEnd}>
         {
           Columns.map((col, index) => (
-            <Column key={index} id={col.id} index={index} name={col.name} value={col.value} boardId={params.boardId} Tasks={Tasks?.filter((task: Task) => task.status === col.value)}/>))
+            <Column key={index} id={col.id} name={col.name} status={col.status} boardId={params.boardId} Tasks={Tasks?.filter((task: Task) => task.status === col.status)}/>))
         }
+      </DragDropContext>
       
     </main>
 

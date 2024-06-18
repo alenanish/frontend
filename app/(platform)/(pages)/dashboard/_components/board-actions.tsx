@@ -52,7 +52,7 @@ export function BoardAction({ board_id, board_title, board_progress, board_descr
         
         });
       if (formData.id) {
-        console.log(formData.id)
+       
         axios          
             .patch(`http://localhost:8000/api/boards/${formData.id}/`, formData, {
             headers: {

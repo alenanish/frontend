@@ -18,7 +18,7 @@ import React, { useEffect, useState } from 'react';
 
 import "@/app/style.css";
 import axios from "axios";
-import Task from "../../(pages)/tasks/_components/task";
+
 
 interface Team {
   id: number,
@@ -30,12 +30,12 @@ interface Team {
 
 
 export function TaskAction({boardId, trigger, task_id, task_title, task_priority, task_description, task_created_at, task_deadline, task_on_board, task_assignee, task_status } 
-    : {boardId: number; trigger: any; task_id: number | null; task_title: string; task_priority: string; task_description: string; task_created_at: string; task_deadline: string | null; task_on_board: number; task_assignee: string | null; task_status: string; }) {
+    : {boardId: number; trigger: any; task_id: number | null; task_title: string; task_priority: string; task_description: string; task_created_at: string; task_deadline: string | null; task_on_board: number; task_assignee: number | null; task_status: string; }) {
     const [post, setPost] = React.useState(null);
 
 
     const [selectedPriority, setSelectedPriority] = useState("");
-    const [selectedMember, setSelectedMember] = useState("");
+    const [selectedMember, setSelectedMember] = useState(null);
 
     const handleSelectChange = (selectedOption: any) => {
         setSelectedPriority(selectedOption['value'])
@@ -65,7 +65,7 @@ export function TaskAction({boardId, trigger, task_id, task_title, task_priority
         ...prevState,
         [name]: value,
         priority: selectedPriority === 'Средний' ? 'medium':  selectedPriority === 'Высокий' ? 'high': 'low',
-        assignee: selectedMember,
+         assignee: 9 
         }));
        
     };
@@ -111,16 +111,14 @@ export function TaskAction({boardId, trigger, task_id, task_title, task_priority
 
 
     interface Team {
-      id: {
         board: number;
         can_edit: boolean;
         id: number;
-      }
         participant: {
           email: string;
           id: number;
           username: string;
-        };
+        }
       }
       
       const findLabelByValue = (Team: any, value: any) => {
@@ -147,9 +145,7 @@ export function TaskAction({boardId, trigger, task_id, task_title, task_priority
                 headers: {
                   'Authorization': 'Bearer ' + localStorage.getItem('auth'),
                 }
-              })
-
-              
+              })              
               var teams = response.data
 
             } catch (error) {
@@ -177,7 +173,6 @@ export function TaskAction({boardId, trigger, task_id, task_title, task_priority
           );
       
           
-
     const customSelectStyles = {
       container: (baseStyles: any) => ({
         ...baseStyles,
@@ -317,6 +312,7 @@ export function TaskAction({boardId, trigger, task_id, task_title, task_priority
 
                       <Select name="priority"
                         placeholder="Приоритет"
+                        id="priority"
                         required
                         defaultValue={task_priority ?  { label: getPriority(task_priority), value: getPriority(task_priority) } : '' }
                         options={
@@ -334,14 +330,17 @@ export function TaskAction({boardId, trigger, task_id, task_title, task_priority
 
                 <div className="w-1/2 items-center gap-1.5">
                   <Label htmlFor="assignee">Назначить</Label>
-                    <Select name="assignee"
-                      placeholder="Имя пользователя"
-                      defaultValue={ !task_assignee ? '' :  { label:  findLabelByValue(Team, task_assignee), value: findLabelByValue(Team, task_assignee)} }
-                      options={teamOptions}
-                                    
-                      onChange={handleSelectedMember}
-                      styles={customSelectStyles }
-                      />
+                  <Input 
+                    type="number" 
+                    
+                    id="assignee" 
+                    name="assignee"
+                    defaultValue={ task_assignee ? task_assignee : '' }   
+                    min={ task_created_at }          
+                    placeholder="Введите уникальный номер" 
+                    className="w-fit" 
+                    onChange={handleChange}
+                />
                 </div>
               </div>  
 

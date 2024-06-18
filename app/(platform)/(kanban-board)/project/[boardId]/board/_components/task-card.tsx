@@ -3,14 +3,15 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { EllipsisVertical, Trash2, X, Calendar, PenLine } from "lucide-react"
 
-import { Draggable, Droppable } from "@hello-pangea/dnd";
+import { Draggable } from "@hello-pangea/dnd";
 
 import TaskAction from "./task-actions";
 import axios from "axios";
 
+
  
 const TaskCard = ({id, index,  title,  description,  created_at,  deadline,  priority,  on_board,  assignee,  status } 
-  : {id: number; index:number;  title: string;  description: string;  created_at: string;  deadline: string ;  priority: string;  on_board: number;  assignee: string | null;  status: string; }) => {
+  : {id: number; index:number;  title: string;  description: string;  created_at: string;  deadline: string ;  priority: string;  on_board: number;  assignee: number | null;  status: string; }) => {
   
   const [isOpen, setIsOpen] = useState(false);
 
@@ -31,13 +32,14 @@ const TaskCard = ({id, index,  title,  description,  created_at,  deadline,  pri
   };
   
   return (
-    <Draggable  draggableId={ id.toString()} index={index}>
-      {(provided) => (
-      <article className="bg-white  border-2 border-primary flex flex-col items-stretch p-3 gap-2
-                          shadow-[0px_4px_8px_rgba(0,0,0,0.5)] rounded-md w-full h-[200px] " 
+    <Draggable  draggableId={ String(id)} index={index}>
+       {(provided, snapshot) => (
+      <article className={ `bg-white  border-2 border-primary flex flex-col items-stretch p-3 gap-2
+                          shadow-[0px_4px_8px_rgba(0,0,0,0.5)] rounded-md w-full h-[200px] +  ${snapshot.isDragging ? " "  : "" }`  }
                           {...provided.draggableProps}
+                          {...provided.dragHandleProps}
                           ref={provided.innerRef}
-                          >
+            >
 
           <div className="flex flex-row justify-between">
             <div className={`${ priority === 'high' ? " bg-accent/10  border-accent/40 text-accent" :"" } 
@@ -83,12 +85,8 @@ const TaskCard = ({id, index,  title,  description,  created_at,  deadline,  pri
                 className="flex flex-col h-full"
                 {...provided.dragHandleProps}
                 >
-                <Droppable droppableId={id.toString()} type="card">
-                {(provided) => (
-                    <div className="flex flex-col h-full"
-                        ref={provided.innerRef}
-                        {...provided.droppableProps}
-                    >
+                
+                    <div className="flex flex-col h-full">               
                         <div className="flex flex-col h-full items-center align-middle justify-center" >
                             <h1 className="text-center line-clamp-2 text-balance font-medium"> 
                                 {title} 
@@ -108,11 +106,7 @@ const TaskCard = ({id, index,  title,  description,  created_at,  deadline,  pri
                             
                             </div>
                         </div>
-                        {provided.placeholder}
                 </div>
-                )}
-                </Droppable>
-
               </div>          
       </article>
       )}
