@@ -29,27 +29,23 @@ interface Team {
 };
 
 
-export function TaskAction({boardId, trigger, task_id, task_title, task_priority, task_description, task_created_at, task_deadline, task_on_board, task_assignee, task_status } 
-    : {boardId: number; trigger: any; task_id: number | null; task_title: string; task_priority: string; task_description: string; task_created_at: string; task_deadline: string | null; task_on_board: number; task_assignee: number | null; task_status: string; }) {
+export function TaskAction({boardId, trigger, task_id, task_title, task_priority, task_description, task_deadline, task_on_board, task_assignee, task_status } 
+    : {boardId: number; trigger: any; task_id: number | null; task_title: string; task_priority: string; task_description: string;  task_deadline: string | null; task_on_board: number; task_assignee: number | null; task_status: string; }) {
     const [post, setPost] = React.useState(null);
 
 
     const [selectedPriority, setSelectedPriority] = useState("");
-    const [selectedMember, setSelectedMember] = useState(null);
 
     const handleSelectChange = (selectedOption: any) => {
         setSelectedPriority(selectedOption['value'])
       };
 
-      const handleSelectedMember = (selectedOptions: any) => {
-        setSelectedMember(selectedOptions['value'])
-      };
+
 
     const [formData, setFormData] = useState({
         id: task_id,
         title: task_title,
         description: task_description,
-        created_at: task_created_at,
         deadline: task_deadline,
         on_board: task_on_board,
         assignee: task_assignee,
@@ -60,13 +56,12 @@ export function TaskAction({boardId, trigger, task_id, task_title, task_priority
 
 
     const handleChange = (e: { target: { name: any; value: any; }; }) => {
-        const { name, value } = e.target;
-        setFormData(prevState => ({
-        ...prevState,
-        [name]: value,
-        priority: selectedPriority === 'Средний' ? 'medium':  selectedPriority === 'Высокий' ? 'high': 'low',
-         assignee: 9 
-        }));
+      const { name, value } = e.target;
+      setFormData(prevState => ({
+      ...prevState,
+      [name]: name === 'assignee' ? parseInt(value) : value,
+      priority: selectedPriority === 'Средний' ? 'medium':  selectedPriority === 'Высокий' ? 'high': 'low',
+      }));
        
     };
 
@@ -76,12 +71,12 @@ export function TaskAction({boardId, trigger, task_id, task_title, task_priority
 
     const handleSubmit = (e: { preventDefault: () => void; }) => {
         e.preventDefault();
-        console.log({
+        console.log('data: ', {
         ...formData,
         
         });
       if (formData.id) {
-        // if old post to edit and submit
+
         axios
           .patch(`http://localhost:8000/api/project/${formData.on_board}/board/${formData.id}/`, formData, {
             headers: {
@@ -109,7 +104,6 @@ export function TaskAction({boardId, trigger, task_id, task_title, task_priority
         dialogClose(); 
     };
 
-
     interface Team {
         board: number;
         can_edit: boolean;
@@ -121,11 +115,6 @@ export function TaskAction({boardId, trigger, task_id, task_title, task_priority
         }
       }
       
-      const findLabelByValue = (Team: any, value: any) => {
-        const team = Team.find((team: { participant: { id: any; }; }) => team.participant.id === value);
-        return team ? team.participant.username : null;
-      };
-
       const getPriority = (priority: string) => {
         if (priority === 'high'){
           return 'Высокий';
@@ -135,10 +124,7 @@ export function TaskAction({boardId, trigger, task_id, task_title, task_priority
         }  
         return 'Низкий';
       };
-      
-      const [Team, setTeam] = useState();
-      const [teamOptions, setTeamOptions] = useState();
-      
+
           const fetchTeam = async () => {
             try {
               const response = await axios.get(`http://localhost:8000/api/project/${boardId}/team/`, {
@@ -151,19 +137,6 @@ export function TaskAction({boardId, trigger, task_id, task_title, task_priority
             } catch (error) {
               console.error('Ошибка при получении данных:', error);
             }
-
-            setTeam(
-
-              teams.map((team: { participant: { id: any; username: any; email: any; }; id: { can_edit: any; board: any; }; }) => ({
-                value:  team.participant.id,
-                label: team.participant.username,}))
-            )
-            setTeamOptions(
-            teams.map((team: { participant: { id: any; username: any; email: any; }; id: { can_edit: any; board: any; }; }) => ({
-              value: team.participant.id,
-              label: team.participant.id,
-              
-            })))     
           };
       
           useEffect(() => {
@@ -278,20 +251,6 @@ export function TaskAction({boardId, trigger, task_id, task_title, task_priority
             </div>
             <div className="flex flex-row w-full justify-between gap-2  ">
                 <div className="w-1/2 items-center gap-1.5">
-                <Label htmlFor="created_at">Начало</Label>
-                <Input 
-                    type="date" 
-                    required
-                    id="created_at" 
-                    name="created_at"
-                    defaultValue={ task_created_at }  
-                    min ={ task_created_at }           
-                    placeholder="Создано" 
-                    className="w-fit" 
-                    onChange={handleChange}
-                />
-                </div>
-                <div className="w-1/2 items-center gap-1.5">
                 <Label htmlFor="deadline">Дедлайн</Label>
                 <Input 
                     type="date" 
@@ -299,7 +258,7 @@ export function TaskAction({boardId, trigger, task_id, task_title, task_priority
                     id="deadline" 
                     name="deadline"
                     defaultValue={ task_deadline ? task_deadline : ' ' }   
-                    min={ task_created_at }          
+                    min={ new Date().toDateString() }          
                     placeholder="Дедлайн" 
                     className="w-fit" 
                     onChange={handleChange}
@@ -332,19 +291,16 @@ export function TaskAction({boardId, trigger, task_id, task_title, task_priority
                   <Label htmlFor="assignee">Назначить</Label>
                   <Input 
                     type="number" 
-                    
                     id="assignee" 
                     name="assignee"
-                    defaultValue={ task_assignee ? task_assignee : '' }   
-                    min={ task_created_at }          
+                    defaultValue={ task_assignee ? task_assignee : '' }           
                     placeholder="Введите уникальный номер" 
+                    min={0}
                     className="w-fit" 
                     onChange={handleChange}
                 />
                 </div>
-              </div>  
-
-          
+              </div>           
             <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="description">Описание задачи</Label>
                 <Textarea 

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { EllipsisVertical, Trash2, X } from "lucide-react"
 import { BoardAction } from "./board-actions";
@@ -11,7 +11,7 @@ import axios from "axios";
 
 
 const BoardCard = ({ id, title, progress, description, handleDelete, refreshPage } 
-    : {id: number; title: string; progress: number; description: string; handleDelete: any; refreshPage: any;}) => {
+    : {id: number;  title: string; progress: number; description: string; handleDelete: any; refreshPage: any;}) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
@@ -30,6 +30,40 @@ const BoardCard = ({ id, title, progress, description, handleDelete, refreshPage
 
   };
 
+
+  interface Team {
+    board: number;
+    can_edit: boolean;
+    id: number;
+      participant: {
+      email: string;
+      id: number;
+      username: string;
+    }
+}
+
+const [Team, setTeam] = useState<Team[]>([]);
+
+    const fetchTeam = async () => {
+      try {
+        const response = await axios.get(`http://localhost:8000/api/project/${id}/team/`, {
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('auth'),
+          }
+        })
+        setTeam(response.data);
+        console.log(response.data)
+        
+      } catch (error) {
+        console.error('Ошибка при получении данных:', error);
+      }
+    };
+
+    useEffect(() => {
+        fetchTeam();
+        
+    }, [],
+    );
   return (
     <article className="bg-white  border-2 border-primary flex flex-col items-stretch p-3 gap-2
                          shadow-[0px_4px_8px_rgba(0,0,0,0.5)] rounded-md w-[200px] h-[200px]" >

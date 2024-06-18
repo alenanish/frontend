@@ -59,12 +59,16 @@ const Member = ({ id, participant_id, username, email, can_edit, board_id, refre
     };
   
     return (
-      <article className="flex w-full h-fit p-1 ">
-        <div className="w-1/4 flex self-center justify-center font-medium">
+      <article className="grid grid-cols-5 w-full h-fit p-1 ">
+        <div className=" flex self-center justify-center font-medium">
+          {participant_id}
+        </div>
+        <div className=" flex self-center justify-center font-medium">
           {username}
         </div>
-        <div className="w-1/4 flex self-center justify-center ">{email}</div>
-        <div className="w-1/4 flex self-center justify-center ">
+        
+        <div className=" flex self-center justify-center ">{email}</div>
+        <div className=" flex self-center justify-center ">
           <Switch
             onColor="#A46DDA"
             borderRadius={6}
@@ -72,7 +76,7 @@ const Member = ({ id, participant_id, username, email, can_edit, board_id, refre
             checked={checked}
           />
         </div>
-        <div className="w-1/4 flex self-center justify-center ">
+        <div className=" flex self-center justify-center ">
           <Button
             variant="ghost"
             size="icon"

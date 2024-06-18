@@ -19,8 +19,6 @@ export default function TeamPage({ params }: { params: { boardId: number } }) {
         username: string;
       }
   }
-
- 
   
   const [Team, setTeam] = useState<Team[]>([]);
   
@@ -57,12 +55,12 @@ export default function TeamPage({ params }: { params: { boardId: number } }) {
         
         <div className="bg-white flex flex-wrap gap-4 border-2 border-primary items-stretch p-3
                      shadow-[0px_4px_8px_rgba(0,0,0,0.5)] rounded-md h-full w-full">
-        <article className="flex w-full h-full p-1 border-b border-neutral-500 self-center " >
-
-            <div className="w-1/4 flex justify-center self-center font-medium">Имя пользователя</div>
-            <div className='w-1/4 flex justify-center self-center '>Эл.почта</div>
-            <div className="w-1/4 flex justify-center self-center "> Разрешить <br/> редактирование </div>
-            <div className="w-1/4 flex justify-center self-center "> Убрать из команды </div>
+        <article className="grid grid-cols-5 w-full h-full p-1 border-b border-neutral-500 self-center " >
+            <div className=" flex justify-center self-center font-medium">ID</div>
+            <div className=" flex justify-center self-center font-medium">Имя пользователя</div>
+            <div className=' flex justify-center self-center '>Эл.почта</div>
+            <div className=" flex justify-center self-center "> Разрешить <br/> редактирование </div>
+            <div className=" flex justify-center self-center "> Убрать из команды </div>
         </article>
             
         {
