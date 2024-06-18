@@ -1,39 +1,40 @@
 "use client";
 
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { Key, useEffect, useState } from "react";
 import Member from "./_components/member";
-import { Button } from "@/components/ui/button";
-import { UserRoundPlus } from "lucide-react";
+import { useRouter } from "next/navigation";
+import AddTeamMemberButton from "./_components/add-team-member";
 
 
 export default function TeamPage({ params }: { params: { boardId: number } }) {
-
+  const router = useRouter();
   interface Team {
-  id: {
-    board: number;
-    can_edit: boolean;
-    id: number;
-  }
-    participant: {
-      email: string;
+      board: number;
+      can_edit: boolean;
       id: number;
-      username: string;
-    };
+        participant: {
+        email: string;
+        id: number;
+        username: string;
+      }
   }
+
+ 
   
-  
-  const [Team, setTeam] = useState([]);
+  const [Team, setTeam] = useState<Team[]>([]);
   
       const fetchTeam = async () => {
         try {
+          console.log(`http://localhost:8000/api/project/${params.boardId}/team/`)
           const response = await axios.get(`http://localhost:8000/api/project/${params.boardId}/team/`, {
             headers: {
               'Authorization': 'Bearer ' + localStorage.getItem('auth'),
             }
           })
-  
           setTeam(response.data);
+          console.log(response.data)
+          
         } catch (error) {
           console.error('Ошибка при получении данных:', error);
         }
@@ -48,13 +49,9 @@ export default function TeamPage({ params }: { params: { boardId: number } }) {
 
   return (
     <div className=" flex flex-col gap-2 items-start m-2 p-4 h-full w-full " >
-      <div className="w-fit h-fit absolute top-10 right-6">
-        <Button type="button" variant="default" className="sm:px-2 md:gap-2">
-          <UserRoundPlus />
-          <span className="hidden md:block">
-            Добавить участника
-          </span>
-        </Button>
+      <div>
+
+          <AddTeamMemberButton board_id={params.boardId} refreshPage={fetchTeam} />
         </div>
 
         
@@ -69,9 +66,10 @@ export default function TeamPage({ params }: { params: { boardId: number } }) {
         </article>
             
         {
-          Team.map((member: Team, index) => (
-            <Member board_id={member.id.board} key={index} id={member.id.id} email={member.participant.email}  username={member.participant.username}  can_edit={member.id.can_edit} />
-          ))
+          Team? Team.map((member: Team, index: Key | null | undefined) => (
+            <Member id={member.id} board_id={member.board} key={index} participant_id={member.participant.id} email={member.participant.email}  username={member.participant.username}  can_edit={member.can_edit} refreshPage={fetchTeam}/>
+          )):
+          <span>Нет действующих участников</span>
       
         }
         </div>

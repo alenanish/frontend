@@ -8,38 +8,82 @@ import Switch from "react-switch";
 import axios from "axios";
 
 
-const Member = ({ id, username, email, can_edit, board_id } 
-    : {id: number; username: string; email: string; can_edit: boolean; board_id: number; }) => {
+
+
+const Member = ({ id, participant_id, username, email, can_edit, board_id, refreshPage } 
+    : {id: number; participant_id: number; username: string; email: string; can_edit: boolean; board_id: number; refreshPage: any }) => {
   
-    const [checked, setChecked] = useState(!can_edit);
+    const [checked, setChecked] = useState(can_edit);
 
-    const handleDelete = async () => {
-        try {
-          await axios.delete(`http://localhost:8000/api/project/${board_id}/team/${id}/`, {
+    const [member, setMember] = useState( {
+      id: id,
+      participant_id: participant_id,
+      board_id: board_id,
+      can_edit: can_edit,
+      username: username,
+      email: email,
+    }
+     );
+
+     const handleDelete = async () => {
+      try {
+        await axios.delete(
+         ` http://localhost:8000/api/project/${member.board_id}/team/${member.id}/`,
+          {
             headers: {
-              'Authorization': 'Bearer ' + localStorage.getItem('auth'),
-            }
-          });
-              } catch (error) {
-          console.error('Ошибка при удалении проекта:', error);
-        }
-      };
-
+              Authorization: "Bearer " + localStorage.getItem("auth"),
+            },
+          }
+        );
+      } catch (error) {
+        console.error("Ошибка при удалении члена команды:", error);
+      }
+      refreshPage();
+    };
+  
+    const handleChange = async () => {
+      setChecked(!checked);
+      try {
+        await axios.patch(
+          `http://localhost:8000/api/project/${member.board_id}/team/${member.id}/`,
+          { can_edit: !checked },
+          {
+            headers: {
+              Authorization: "Bearer " + localStorage.getItem("auth"),
+            },
+          }
+        );
+      } catch (error) {
+        console.error("Ошибка при обновлении прав доступа:", error);
+      }
+    };
+  
     return (
-        <article className="flex w-full h-fit p-1 " >
-            <div className="w-1/4 flex self-center justify-center font-medium">{username}</div>
-            <div className="w-1/4 flex self-center justify-center ">{ email }</div>
-            <div className="w-1/4 flex self-center justify-center ">
-                <Switch onColor="#A46DDA" borderRadius={6} onChange={setChecked} checked={checked} />
-            </div>
-            <div className="w-1/4 flex self-center justify-center ">
-                <Button variant="ghost" size="icon" className=" hover:stroke-destructive hover:border-destructive"
-                onClick={handleDelete}>
-                    <Trash2 />    
-                </Button> 
-            </div>
-        </article>
-  );
-};
-
-export default Member;
+      <article className="flex w-full h-fit p-1 ">
+        <div className="w-1/4 flex self-center justify-center font-medium">
+          {username}
+        </div>
+        <div className="w-1/4 flex self-center justify-center ">{email}</div>
+        <div className="w-1/4 flex self-center justify-center ">
+          <Switch
+            onColor="#A46DDA"
+            borderRadius={6}
+            onChange={handleChange}
+            checked={checked}
+          />
+        </div>
+        <div className="w-1/4 flex self-center justify-center ">
+          <Button
+            variant="ghost"
+            size="icon"
+            className=" hover:stroke-destructive hover:border-destructive"
+            onClick={handleDelete}
+          >
+            <Trash2 />
+          </Button>
+        </div>
+      </article>
+    );
+  };
+  
+  export default Member;
