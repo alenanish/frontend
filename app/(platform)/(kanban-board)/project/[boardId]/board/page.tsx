@@ -62,17 +62,22 @@ const [Tasks, setTasks] = useState<Task[]>([]);
 
     const sourceColumn = result.source.droppableId;
     const destinationColumn = result.destination.droppableId;
+    console.log('srcCol', destinationColumn)
+    console.log('destCol', destinationColumn)
+    
+
 
     if (sourceColumn === destinationColumn) return; // Карточка перетаскивалась внутри того же столбца
 
+    console.log('id', result.draggableId)
+
     const updatedCards = [...Tasks];
     const cardIndex = updatedCards.findIndex(
-      (task) => task.id === result.draggableId
+      (task) => task.id === Number(result.draggableId)
     );
     const [reorderedCard] = updatedCards.splice(cardIndex, 1);
-    console.log('destCol', destinationColumn)
-
-    reorderedCard.status = destinationColumn; // Обновляем столбец карточки
+   
+    reorderedCard.status = destinationColumn; 
 
     updatedCards.splice(result.destination.index, 0, reorderedCard);
 
@@ -111,7 +116,7 @@ const [Tasks, setTasks] = useState<Task[]>([]);
     <DragDropContext onDragEnd={handleOnDragEnd}>
         {
           Columns.map((col, index) => (
-            <Column key={index} id={col.id} name={col.name} status={col.status} boardId={params.boardId} Tasks={Tasks?.filter((task: Task) => task.status === col.status)}/>))
+            <Column id={col.id} key={col.id} name={col.name} status={col.status} boardId={params.boardId} Tasks={Tasks?.filter((task: Task) => task.status === col.status)}/>))
         }
       </DragDropContext>
       

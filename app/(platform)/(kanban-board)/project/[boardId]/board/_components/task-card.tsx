@@ -32,7 +32,7 @@ const TaskCard = ({id, index,  title,  description,  created_at,  deadline,  pri
   };
   
   return (
-    <Draggable  draggableId={ String(id)} index={index}>
+    <Draggable key={id}  draggableId={ String(id)} index={index}>
        {(provided, snapshot) => (
       <article className={ `bg-white  border-2 border-primary flex flex-col items-stretch p-3 gap-2
                           shadow-[0px_4px_8px_rgba(0,0,0,0.5)] rounded-md w-full h-[200px] +  ${snapshot.isDragging ? " "  : "" }`  }

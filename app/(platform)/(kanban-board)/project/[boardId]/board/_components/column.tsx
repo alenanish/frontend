@@ -16,14 +16,14 @@ interface ColumnProps {
     status: string;
     boardId: number;
     Tasks: any;
-    key: number;
     id: number;
     name: string;
+    
 }
 
 
 
-export const Column = ( {status, key, boardId, Tasks, name, id} : ColumnProps ) => { 
+export const Column = ( {status, boardId, Tasks, name, id} : ColumnProps ) => { 
     const [orderedData, setOrderedData] = useState(Tasks);
 
     useEffect(() =>{
@@ -43,7 +43,7 @@ export const Column = ( {status, key, boardId, Tasks, name, id} : ColumnProps ) 
                     }  
                 />
             </div>
-            <Droppable droppableId={status} >
+            <Droppable key={id} droppableId={status} >
                 {(droppableProvided, snapshot) => (
                         <div 
                         className= {snapshot.isDraggingOver ? ' opacity-5' : '' 
