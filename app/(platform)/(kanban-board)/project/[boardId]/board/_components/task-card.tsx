@@ -11,8 +11,8 @@ import { HoverCard, HoverCardContent, HoverCardTrigger } from "@radix-ui/react-h
 
 
  
-const TaskCard = ({refreshPage, id, index,  title,  description,  deadline,  priority,  on_board,  assignee,  status } 
-  : {refreshPage: any; id: number; index:number;  title: string;  description: string;  deadline: string ;  priority: string;  on_board: number;  assignee: number | null;  status: string; }) => {
+const TaskCard = ({id, index,  title,  description,  deadline,  priority,  on_board,  assignee,  status,  } 
+  : {id: number; index:number;  title: string;  description: string;  deadline: string ;  priority: string;  on_board: number;  assignee: number | null;  status: string;  }) => {
   
   const [isOpen, setIsOpen] = useState(false);
 
@@ -30,6 +30,7 @@ const TaskCard = ({refreshPage, id, index,  title,  description,  deadline,  pri
           } catch (error) {
       console.error('Ошибка при удалении проекта:', error);
     }
+   
   };
   
   return (
@@ -69,7 +70,7 @@ const TaskCard = ({refreshPage, id, index,  title,  description,  deadline,  pri
                       </Button>
                       <TaskAction boardId={on_board} task_id={ id } task_title={title} task_priority={priority}  task_description={description} 
                             task_deadline={deadline} task_on_board={on_board} task_assignee={assignee} task_status={status}
-                            trigger={
+                           trigger={
                                 <Button size="icon" type="button" variant="secondary"  className="hover:bg-[#D5DDEE] ">
                                 < PenLine size={20} className="  group-hover:stroke-[#6D88B0]"/>
                                 </Button>
@@ -90,7 +91,7 @@ const TaskCard = ({refreshPage, id, index,  title,  description,  deadline,  pri
                     <div className="flex flex-col h-full">               
                         <div className="flex flex-col content-start items-start relative h-full justify-center  " >
                         <HoverCard>
-                            <HoverCardTrigger className="justify-srart absolute top-0  h-it w-full  " asChild>
+                            <HoverCardTrigger className=" self-center absolute top-0  h-it w-fit   " asChild>
                               <Button className=" font-medium text-neutral-800 " variant="link">{title}</Button>
                             </HoverCardTrigger>
                             <HoverCardContent className="w-[200px]">

@@ -101,7 +101,7 @@ const [Tasks, setTasks] = useState<Task[]>([]);
   return (
   <div className="w-full">
     <div className="w-fit h-fit absolute top-10 right-6">
-      <TaskAction boardId={params.boardId} task_id={null} task_title={''} task_priority={''} task_description={''}  task_deadline={null} task_on_board={params.boardId} task_assignee={null} task_status={'to-do'}
+      <TaskAction  boardId={params.boardId} task_id={null} task_title={''} task_priority={''} task_description={''}  task_deadline={null} task_on_board={params.boardId} task_assignee={null} task_status={'to-do'}
         trigger={
           <Button type="button" variant="default" className="sm:px-2 md:gap-2">
                         <Plus />
