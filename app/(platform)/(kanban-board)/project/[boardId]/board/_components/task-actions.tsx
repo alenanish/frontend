@@ -48,7 +48,6 @@ export function TaskAction({
     const [dateErr, setDateErr] = useState('')
     const [assigneeErr, setAssigneeErr] = useState('')
 
-
     const getPriority = (priority: string) => {
         if (priority === 'high') {
             return 'Высокий'
@@ -58,7 +57,9 @@ export function TaskAction({
         }
         return 'Низкий'
     }
-    const [selectedPriority, setSelectedPriority] = useState(getPriority(task_priority))
+    const [selectedPriority, setSelectedPriority] = useState(
+        getPriority(task_priority)
+    )
 
     const handleSelectChange = (selectedOption: any) => {
         setSelectedPriority(selectedOption['value'])
@@ -114,7 +115,7 @@ export function TaskAction({
         deadline?: string | null
         on_board: any
         assignee?: number | null
-        status?: string
+        status: string
         priority?: string
     }) => {
         try {
@@ -150,15 +151,15 @@ export function TaskAction({
 
     const changeTask = async (formData: {
         id?: number | null
-        title?: string
+        title: string
         description?: string
-        deadline?: string | null
+        deadline: string | null
         on_board: any
-        assignee?: number | null
-        status?: string
-        priority?: string
+        assignee: number | null
+        status: string
+        priority: string
     }) => {
-        console.log('formData: ', formData)
+        
         try {
             const response = await axios
                 .patch(
@@ -188,28 +189,6 @@ export function TaskAction({
             }
         }
     }
-
-    
-
-    const fetchTeam = async () => {
-        try {
-            const response = await axios.get(
-                `http://localhost:8000/api/project/${boardId}/team/`,
-                {
-                    headers: {
-                        Authorization: 'Bearer ' + localStorage.getItem('auth'),
-                    },
-                }
-            )
-            var teams = response.data
-        } catch (error) {
-            console.error('Ошибка при получении данных:', error)
-        }
-    }
-
-    useEffect(() => {
-        fetchTeam()
-    }, [])
 
     const customSelectStyles = {
         container: (baseStyles: any) => ({
