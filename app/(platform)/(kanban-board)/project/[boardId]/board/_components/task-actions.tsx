@@ -31,6 +31,7 @@ export function TaskAction({
     task_on_board,
     task_assignee,
     task_status,
+    refreshPage,
 }: {
     boardId: number
     trigger: any
@@ -42,10 +43,22 @@ export function TaskAction({
     task_on_board: number
     task_assignee: number | null
     task_status: string
+    refreshPage: any
 }) {
     const [dateErr, setDateErr] = useState('')
     const [assigneeErr, setAssigneeErr] = useState('')
-    const [selectedPriority, setSelectedPriority] = useState('')
+
+
+    const getPriority = (priority: string) => {
+        if (priority === 'high') {
+            return 'Высокий'
+        }
+        if (priority === 'medium') {
+            return 'Средний'
+        }
+        return 'Низкий'
+    }
+    const [selectedPriority, setSelectedPriority] = useState(getPriority(task_priority))
 
     const handleSelectChange = (selectedOption: any) => {
         setSelectedPriority(selectedOption['value'])
@@ -119,6 +132,7 @@ export function TaskAction({
                 .then((response) => {
                     console.log(response)
                     if (response.status >= 200 && response.status < 400) {
+                        refreshPage()
                         dialogClose()
                     }
                 })
@@ -144,6 +158,7 @@ export function TaskAction({
         status?: string
         priority?: string
     }) => {
+        console.log('formData: ', formData)
         try {
             const response = await axios
                 .patch(
@@ -157,8 +172,8 @@ export function TaskAction({
                     }
                 )
                 .then((response) => {
-                    console.log(response.data)
                     if (response.status >= 200 && response.status < 400) {
+                        refreshPage()
                         dialogClose()
                     }
                 })
@@ -174,15 +189,7 @@ export function TaskAction({
         }
     }
 
-    const getPriority = (priority: string) => {
-        if (priority === 'high') {
-            return 'Высокий'
-        }
-        if (priority === 'medium') {
-            return 'Средний'
-        }
-        return 'Низкий'
-    }
+    
 
     const fetchTeam = async () => {
         try {
@@ -283,8 +290,12 @@ export function TaskAction({
     }
 
     return (
-        <Dialog onOpenChange={() => {setAssigneeErr('');
-            setDateErr('')}}>
+        <Dialog
+            onOpenChange={() => {
+                setAssigneeErr('')
+                setDateErr('')
+            }}
+        >
             <DialogTrigger asChild>{trigger}</DialogTrigger>
             <DialogContent className=" h-fit  border-2 border-primary self-center justify-self-center w-4/6">
                 <DialogHeader>
